@@ -10,7 +10,6 @@ export interface UpdateSeed {
 
 export interface ToggleUseSeed {
   type: 'toggle-use-seed'
-  value: boolean
 }
 
 export interface Composite {
@@ -27,13 +26,13 @@ export type Action =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Action = {
-  evaluateExpression (expr: string): EvaluateExpression {
+  evaluateExpression(expr: string): EvaluateExpression {
     return { type: 'evaluate-expression', expr }
   },
-  updateSeed (value: number): UpdateSeed {
+  updateSeed(value: number): UpdateSeed {
     return { type: 'update-seed', value }
   },
-  toggleUseSeed (value: boolean): ToggleUseSeed {
-    return { type: 'toggle-use-seed', value }
+  toggleUseSeed(): ToggleUseSeed {
+    return { type: 'toggle-use-seed' }
   }
 }

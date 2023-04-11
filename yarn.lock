@@ -3032,6 +3032,11 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+nano-markdown@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/nano-markdown/-/nano-markdown-1.2.2.tgz#61302829d67c7bb0531bfc7d7ffab44b476bbfb5"
+  integrity sha512-xp0zc42GsE0JVpcTxICpANgNbVfyhk2pUdRV3cDDxzqVZeXSZgrPGruwlj+umFQxo10BKD1qmWdEdxj1x+A0QQ==
+
 nanoid@^3.3.4:
   version "3.3.6"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
