@@ -1,0 +1,1 @@
+{"version":3,"file":"CSSFontFaceRule.d.ts","sourceRoot":"","sources":["../../../src/css/rules/CSSFontFaceRule.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,YAAY,CAAC;AACjC,OAAO,mBAAmB,MAAM,oCAAoC,CAAC;AAErE;;GAEG;AACH,MAAM,CAAC,OAAO,OAAO,eAAgB,SAAQ,OAAO;IACnD,SAAgB,IAAI,uCAA0B;IACvC,QAAQ,SAAM;IACrB,OAAO,CAAC,MAAM,CAA6B;IAE3C;;;;OAIG;IACH,IAAW,KAAK,IAAI,mBAAmB,CAOtC;CACD"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"ResourceFetch.d.ts","sourceRoot":"","sources":["../../src/fetch/ResourceFetch.ts"],"names":[],"mappings":"AACA,OAAO,SAAS,MAAM,6BAA6B,CAAC;AAGpD;;GAEG;AACH,MAAM,CAAC,OAAO,OAAO,aAAa;IACjC;;;;;;OAMG;WACiB,KAAK,CAAC,QAAQ,EAAE,SAAS,EAAE,GAAG,EAAE,MAAM,GAAG,OAAO,CAAC,MAAM,CAAC;IAU5E;;;;;;OAMG;WACW,SAAS,CAAC,QAAQ,EAAE,SAAS,EAAE,GAAG,EAAE,MAAM,GAAG,MAAM;CAgBjE"}

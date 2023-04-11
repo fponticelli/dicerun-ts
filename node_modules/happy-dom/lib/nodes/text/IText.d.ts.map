@@ -1,0 +1,1 @@
+{"version":3,"file":"IText.d.ts","sourceRoot":"","sources":["../../../src/nodes/text/IText.ts"],"names":[],"mappings":"AAAA,OAAO,cAAc,MAAM,kCAAkC,CAAC;AAE9D,MAAM,CAAC,OAAO,WAAW,KAAM,SAAQ,cAAc;IACpD;;;;;;;OAOG;IACH,SAAS,CAAC,MAAM,EAAE,MAAM,GAAG,KAAK,CAAC;IAEjC;;;;;;OAMG;IACH,SAAS,CAAC,IAAI,CAAC,EAAE,OAAO,GAAG,KAAK,CAAC;CACjC"}

@@ -1,0 +1,16 @@
+import CSSRule from '../CSSRule';
+/**
+ * CSSRule interface.
+ */
+export default class CSSContainerRule extends CSSRule {
+    readonly type: import("../CSSRuleTypeEnum").default;
+    readonly cssRules: CSSRule[];
+    readonly conditionText = "";
+    /**
+     * Returns css text.
+     *
+     * @returns CSS text.
+     */
+    get cssText(): string;
+}
+//# sourceMappingURL=CSSContainerRule.d.ts.map

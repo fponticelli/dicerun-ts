@@ -1,0 +1,1 @@
+{"version":3,"file":"DataTransfer.d.ts","sourceRoot":"","sources":["../../src/event/DataTransfer.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,cAAc,CAAC;AAChC,OAAO,oBAAoB,MAAM,wBAAwB,CAAC;AAE1D;;GAEG;AACH,MAAM,CAAC,OAAO,OAAO,YAAY;IACzB,UAAU,SAAU;IACpB,aAAa,SAAU;IACvB,KAAK,EAAE,IAAI,EAAE,CAAM;IAC1B,SAAgB,KAAK,EAAE,oBAAoB,CAA8B;IACzE,SAAgB,KAAK,EAAE,MAAM,EAAE,CAAM;CACrC"}

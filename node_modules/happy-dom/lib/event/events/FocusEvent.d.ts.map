@@ -1,0 +1,1 @@
+{"version":3,"file":"FocusEvent.d.ts","sourceRoot":"","sources":["../../../src/event/events/FocusEvent.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,YAAY,CAAC;AACjC,OAAO,WAAW,MAAM,gBAAgB,CAAC;AACzC,OAAO,eAAe,MAAM,mBAAmB,CAAC;AAEhD;;GAEG;AACH,MAAM,CAAC,OAAO,OAAO,UAAW,SAAQ,OAAO;IAC9C,SAAgB,aAAa,EAAE,WAAW,CAAQ;IAElD;;;;;OAKG;gBACS,IAAI,EAAE,MAAM,EAAE,SAAS,GAAE,eAAsB;CAO3D"}

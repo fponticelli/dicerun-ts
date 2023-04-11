@@ -1,0 +1,16 @@
+/// <reference types="node" />
+import HTTPS from 'https';
+/**
+ * Synchroneous XMLHttpRequest script builder.
+ */
+export default class XMLHttpRequestSyncRequestScriptBuilder {
+    /**
+     * Sends a synchronous request.
+     *
+     * @param options Options.
+     * @param ssl SSL.
+     * @param data Data.
+     */
+    static getScript(options: HTTPS.RequestOptions, ssl: boolean, data?: string): string;
+}
+//# sourceMappingURL=XMLHttpRequestSyncRequestScriptBuilder.d.ts.map

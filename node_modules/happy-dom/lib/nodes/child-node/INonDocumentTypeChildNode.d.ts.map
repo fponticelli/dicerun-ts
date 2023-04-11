@@ -1,0 +1,1 @@
+{"version":3,"file":"INonDocumentTypeChildNode.d.ts","sourceRoot":"","sources":["../../../src/nodes/child-node/INonDocumentTypeChildNode.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,qBAAqB,CAAC;AAC3C,OAAO,KAAK,MAAM,eAAe,CAAC;AAElC,MAAM,CAAC,OAAO,WAAW,yBAA0B,SAAQ,KAAK;IAC/D,QAAQ,CAAC,sBAAsB,EAAE,QAAQ,CAAC;IAC1C,QAAQ,CAAC,kBAAkB,EAAE,QAAQ,CAAC;CACtC"}

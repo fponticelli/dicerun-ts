@@ -1,0 +1,1 @@
+{"version":3,"file":"IProcessingInstruction.d.ts","sourceRoot":"","sources":["../../../src/nodes/processing-instruction/IProcessingInstruction.ts"],"names":[],"mappings":"AAAA,OAAO,cAAc,MAAM,kCAAkC,CAAC;AAE9D,MAAM,CAAC,OAAO,WAAW,sBAAuB,SAAQ,cAAc;IACrE,MAAM,EAAE,MAAM,CAAC;CACf"}
