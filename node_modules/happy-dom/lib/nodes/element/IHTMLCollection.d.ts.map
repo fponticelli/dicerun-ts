@@ -1,1 +1,0 @@
-{"version":3,"file":"IHTMLCollection.d.ts","sourceRoot":"","sources":["../../../src/nodes/element/IHTMLCollection.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,CAAC,OAAO,WAAW,eAAe,CAAC,CAAC,CAAE,SAAQ,KAAK,CAAC,CAAC,CAAC;IAC3D;;;;OAIG;IACH,IAAI,CAAC,KAAK,EAAE,MAAM,GAAG,CAAC,GAAG,IAAI,CAAC;IAE9B;;;;;OAKG;IACH,SAAS,CAAC,IAAI,EAAE,MAAM,GAAG,CAAC,GAAG,IAAI,CAAC;CAClC"}
