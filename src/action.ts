@@ -12,27 +12,28 @@ export interface ToggleUseSeed {
   type: 'toggle-use-seed'
 }
 
-export interface Composite {
-  type: 'composite'
-  a: Action
-  b: Action
+export interface Roll {
+  type: 'roll'
 }
 
 export type Action =
   | EvaluateExpression
   | UpdateSeed
   | ToggleUseSeed
-  | Composite
+  | Roll
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Action = {
-  evaluateExpression(expr: string): EvaluateExpression {
+  evaluateExpression (expr: string): EvaluateExpression {
     return { type: 'evaluate-expression', expr }
   },
-  updateSeed(value: number): UpdateSeed {
+  updateSeed (value: number): UpdateSeed {
     return { type: 'update-seed', value }
   },
-  toggleUseSeed(): ToggleUseSeed {
+  toggleUseSeed (): ToggleUseSeed {
     return { type: 'toggle-use-seed' }
+  },
+  roll (): Roll {
+    return { type: 'roll' }
   }
 }

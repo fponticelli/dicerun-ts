@@ -1,25 +1,28 @@
-import { JSX, OneOf, Signal } from "@tempots/dom";
-import { Expression, ParseError, ParsedInvalid } from "../state";
-import { Action } from "../action";
-import { Editable } from "./Editable";
+import { type JSX, OneOf, type Signal } from '@tempots/dom'
+import { type Expression, type ParseError, type ParsedInvalid } from '../state'
+import { Action } from '../action'
+import { Editable } from './Editable'
 
 export interface ExpressionInputProps {
-  dispatch: (action: Action) => void;
-  expr: Signal<Expression>;
+  dispatch: (action: Action) => void
+  expr: Signal<Expression>
 }
 
-export function ExpressionInput({ dispatch, expr }: ExpressionInputProps): JSX.DOMNode {
+export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.DOMNode {
   return (
     <div>
       <div class="expression-input">
-        TODO Tooltip here msg.typeHere
-        <Editable value={expr.at('source')} onChange={v => dispatch(Action.evaluateExpression(v))} />
+        <Editable
+          value={expr.at('source')}
+          onChange={v => { dispatch(Action.evaluateExpression(v)) }}
+          autofocus
+        />
       </div>
       <OneOf
         match={expr.map(e => [e.type, e as any])}
-        parse-error={(e: Signal<ParseError>) => (<ParseError />)}
-        parsed={() => <>PARSED TODO</>}
-        unparsed={() => <>UNPARSED TODO</>}
+        parse-error={(e: Signal<ParseError>) => (<ParseErrorView />)}
+        parsed={() => <></>}
+        unparsed={() => <></>}
         parsed-invalid={(e: Signal<ParsedInvalid>) => <ValidationErrors />}
       />
     </div>
@@ -28,7 +31,7 @@ export function ExpressionInput({ dispatch, expr }: ExpressionInputProps): JSX.D
 
 export interface ParseErrorProps { }
 
-export function ParseError(props: ParseErrorProps): JSX.DOMNode {
+export function ParseErrorView (props: ParseErrorProps): JSX.DOMNode {
   return (
     <div class="error">
       <span class="label">msg.expectedOneOf TODO</span>
@@ -49,7 +52,7 @@ export function ParseError(props: ParseErrorProps): JSX.DOMNode {
 
 export interface ValidationErrorsProps { }
 
-export function ValidationErrors(props: ValidationErrorsProps): JSX.DOMNode {
+export function ValidationErrors (props: ValidationErrorsProps): JSX.DOMNode {
   return (
     <div class="error">
       <div>

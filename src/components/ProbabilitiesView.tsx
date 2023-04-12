@@ -1,10 +1,10 @@
-import { JSX, Signal } from "@tempots/dom";
-import { Parsed } from "../state";
+import { type JSX, type Signal } from '@tempots/dom'
+import { type Parsed } from '../state'
 
 export interface ProbabilitiesViewProps {
   parsed: Signal<Parsed>
 }
 
-export function ProbabilitiesView({ parsed }: ProbabilitiesViewProps): JSX.DOMNode {
-  return <div>ProbabilitiesView TODO</div>
+export function ProbabilitiesView ({ parsed }: ProbabilitiesViewProps): JSX.DOMNode {
+  return <div class="bars">ProbabilitiesView TODO</div>
 }

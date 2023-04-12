@@ -13,12 +13,14 @@
     "@tempots/dom": "5.0.2",
     "@tempots/ui": "0.1.0",
     "dicerollerts": "^0.3.0",
+    "marked": "^4.3.0",
     "nano-markdown": "^1.2.2",
     "partsing": "^0.7.3"
   },
   "devDependencies": {
     "@happy-dom/jest-environment": "^9.1.7",
     "@types/jest": "^29.5.0",
+    "@types/marked": "^4.0.8",
     "@types/node": "^18.15.11",
     "@types/showdown": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.43.0",

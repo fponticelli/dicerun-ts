@@ -1,8 +1,6 @@
-import { JSX } from "@tempots/dom";
+import { type JSX } from '@tempots/dom'
 
-export interface JumpersRibbonProps { }
-
-export function JumpersRibbon(props: JumpersRibbonProps): JSX.DOMNode {
+export function JumpersRibbon (): JSX.DOMNode {
   return (
     <div class="ribbon">
       <a href="https://jumpersideas.com/#!dice-roller">

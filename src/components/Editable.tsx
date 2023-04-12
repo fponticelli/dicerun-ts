@@ -1,4 +1,4 @@
-import { JSX, Signal } from "@tempots/dom";
+import { type JSX, type Signal } from '@tempots/dom'
 
 export interface EditableProps {
   value: Signal<string>
@@ -6,6 +6,12 @@ export interface EditableProps {
   autofocus?: boolean
 }
 
-export function Editable({ value, onChange, autofocus }: EditableProps): JSX.DOMNode {
-  return <input class="text-editor" type="text" value={value} onInput={e => onChange((e.target as HTMLInputElement).value)} autofocus={autofocus} />
+export function Editable ({ value, onChange, autofocus }: EditableProps): JSX.DOMNode {
+  return <input
+    class="text-editor"
+    type="text"
+    value={value}
+    onInput={e => { onChange((e.target as HTMLInputElement).value) }}
+    autofocus={autofocus}
+  />
 }

@@ -1,33 +1,33 @@
-import { Prop, type JSX, OneOf, Signal } from '@tempots/dom'
+import { Prop, type JSX, OneOf, type Signal } from '@tempots/dom'
 import { StyleProvider } from '@tempots/ui'
 import { RemoteMarkdown } from './components/Markdown'
 import { ExpressionInput } from './components/ExpressionInput'
 import { RollView } from './components/RollView'
 import { ProbabilitiesView } from './components/ProbabilitiesView'
 import { JumpersRibbon } from './components/JumpersRibbon'
-import { Expression, Parsed, State } from './state'
+import { Expression, type Parsed, type State } from './state'
 import { reduce } from './reducer'
 import { Action } from './action'
 
-function prettify(s: String) {
-  return s.replace("_", " ");
+function prettify (s: string): string {
+  return s.replaceAll('_', ' ')
 }
 
-function trimCharsLeft(s: string, chars: string): string {
-  var i = 0;
-  while (i < s.length && chars.indexOf(s.charAt(i)) >= 0) {
-    i++;
+function trimCharsLeft (s: string, chars: string): string {
+  let i = 0
+  while (i < s.length && chars.includes(s.charAt(i))) {
+    i++
   }
-  return s.substring(i);
+  return s.substring(i)
 }
 
-function makeDispatchHash(dispatch: (action: Action) => void): () => void {
+function makeDispatchHash (dispatch: (action: Action) => void): () => void {
   return () => {
-    var h = trimCharsLeft(window.location.hash, "#/");
-    if (h.startsWith("d/")) {
-      dispatch(Action.evaluateExpression(prettify(h.substring(2))));
-    } else if (h == "") {
-      dispatch(Action.evaluateExpression("3d6"));
+    const h = trimCharsLeft(window.location.hash, '#/')
+    if (h.startsWith('d/')) {
+      dispatch(Action.evaluateExpression(prettify(h.substring(2))))
+    } else if (h === '') {
+      dispatch(Action.evaluateExpression('3d6'))
     }
   }
 }
@@ -40,12 +40,13 @@ export const Content = (): JSX.DOMNode => {
   const state = Prop.of<State>({
     expression: Expression.unparsed(''),
     seed: 1234567890,
-    useSeed: false
+    useSeed: false,
+    roll: null
   })
   const dispatch = state.reducer(reduce)
-  const dispatchHash = makeDispatchHash(dispatch);
-  window.onhashchange = dispatchHash;
-  dispatchHash();
+  const dispatchHash = makeDispatchHash(dispatch)
+  window.onhashchange = dispatchHash
+  dispatchHash()
 
   return (
     <div class="content">
@@ -61,11 +62,7 @@ export const Content = (): JSX.DOMNode => {
                 return ['otherwise', null] as ['otherwise', null]
             }
           })}
-          parsed={((v: Signal<Parsed>) => <RollView dispatch={dispatch} state={
-            state.combine(v, (state: State, parsed) => {
-              return { useSeed: state.useSeed, seed: state.seed, expression: parsed }
-            })
-          } />) as any}
+          parsed={((v: Signal<Parsed>) => <RollView dispatch={dispatch} state={state} />) as any}
           otherwise={() => <></>}
         />
       </div>
