@@ -1,13 +1,16 @@
-import { type JSX, type Signal, When, Prop } from '@tempots/dom'
+import { type JSX, type Signal, When, Prop, OneOf } from '@tempots/dom'
 import { type State } from '../state'
 import { Action } from '../action'
-import { RR } from 'dicerollerts'
+import { DE, RR } from 'dicerollerts'
 import { Editable } from './Editable'
+import { RollDetailsView } from './RollDetailsView'
 
 export interface RollViewProps {
   dispatch: (action: Action) => void
   state: Signal<State>
 }
+
+const DISPLAY_ROLLS_THRESHOLD = 50
 
 function lerpf (a: number, b: number, t: number): number {
   return a + (b - a) * t
@@ -39,9 +42,9 @@ function animateSignal<T> (
   return prop
 }
 
-function animateNumberSignal (signal: Signal<number>, initial: number | undefined = undefined, duration: number = 200): Signal<number> {
-  return animateSignal(signal, lerpf, initial, duration)
-}
+// function animateNumberSignal (signal: Signal<number>, initial: number | undefined = undefined, duration: number = 200): Signal<number> {
+//   return animateSignal(signal, lerpf, initial, duration)
+// }
 
 function animateIntSignal (signal: Signal<number>, initial: number | undefined = undefined, duration: number = 200): Signal<number> {
   return animateSignal(signal, (a, b, t) => Math.round(lerpf(a, b, t)), initial, duration)
@@ -74,6 +77,25 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
         </div>
         <SeedControls useSeed={state.at('useSeed')} seed={state.at('seed')} updateSeed={updateSeed} toggleSeed={toggleSeed} />
       </div>
+      <OneOf
+        match={state.at('expression').map((expr): ['many', null] | ['details', null] | ['empty', null] => {
+          if (expr.type === 'parsed') {
+            const r = DE.calculateBasicRolls(expr.expr)
+            if (r > DISPLAY_ROLLS_THRESHOLD) {
+              return ['many', null]
+            } else {
+              return ['details', null]
+            }
+          } else {
+            return ['empty', null]
+          }
+        })}
+        many={() => <div class="roll-details">Too many dice to display</div>}
+        // TODO
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        details={() => <RollDetailsView result={state.at('roll').map(v => v!)} />}
+        empty={() => <div class="roll-details">Enter an expression to roll</div>}
+      />
     </div>
   )
 }

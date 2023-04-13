@@ -1,15 +1,53 @@
 import { OneOf, type JSX, type Signal } from '@tempots/dom'
-import { DiceBinOp, DiceReducer, DiceResultMapped, DieResult, DieResultFilter, RollResult } from 'dicerollerts'
+import { DiceBinOp, DiceReducer, type OneResult, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type UnaryOp, type DiceReduceResult } from 'dicerollerts'
 
 export interface RollDetailsViewProps {
   result: Signal<RollResult>
 }
 
-export function RollDetailsView({ result }: RollDetailsViewProps): JSX.DOMNode {
-  return <div class="bars">RollDetailsView TODO</div>
+export function RollDetailsView ({ result }: RollDetailsViewProps): JSX.DOMNode {
+  return (
+    <OneOf
+      match={result.map((r) => [r.type, r])}
+      one-result={((r: Signal<OneResult>) => <DieView die={r.map(v => v.die)} />) as any}
+      literal-result={((r: Signal<LiteralResult>) => <LiteralResultView result={r} />) as any}
+      binary-op-result={((r: Signal<DiceBinOp>) => <DiceBinOpView op={r} />) as any}
+      dice-result-mapped={((r: Signal<DiceResultMapped>) => <DiceResultMappedView dice={r} />) as any}
+      dice-reduce-result={((r: Signal<DiceReduceResult>) => <DiceReduceResultView reduce={r} />) as any}
+      unary-op-result={((r: Signal<UnaryOp>) => <UnaryOpView op={r} />) as any}
+    />
+  )
 }
 
-export function DieResultFilterView({ filter }: { filter: Signal<DieResultFilter> }): JSX.DOMNode {
+export function DiceReduceResultView ({ reduce }: { reduce: Signal<DiceReduceResult> }): JSX.DOMNode {
+  return (
+    <div class="dice-reduce-result">
+      DiceReduceResult
+    </div>
+  )
+}
+
+export function UnaryOpView ({ op }: { op: Signal<UnaryOp> }): JSX.DOMNode {
+  return (
+    <div class="unary-op">
+      UnaryOp
+    </div>
+  )
+}
+
+export function DiceBinOpView ({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
+  return (
+    <div class="dice-bin-op">
+      DiceBinOp
+    </div>
+  )
+}
+
+export function LiteralResultView ({ result }: { result: Signal<LiteralResult> }): JSX.DOMNode {
+  return <div class="literal">{result.at('value')}</div>
+}
+
+export function DieResultFilterView ({ filter }: { filter: Signal<DieResultFilter> }): JSX.DOMNode {
   return (
     <div
       class={filter.map((f): string => {
@@ -24,11 +62,11 @@ export function DieResultFilterView({ filter }: { filter: Signal<DieResultFilter
     </div>)
 }
 
-export function DiceResultMappedView({ dice }: { dice: Signal<DiceResultMapped> }): JSX.DOMNode {
+export function DiceResultMappedView ({ dice }: { dice: Signal<DiceResultMapped> }): JSX.DOMNode {
   return <div class="dice">DiceResultMappedView TODO</div>
 }
 
-export function ReducerView({ reducer }: { reducer: Signal<DiceReducer> }): JSX.DOMNode {
+export function ReducerView ({ reducer }: { reducer: Signal<DiceReducer> }): JSX.DOMNode {
   return <OneOf
     match={reducer.map((r): ['sum', null] | ['min', null] | ['max', null] | ['average', null] | ['median', null] => {
       switch (r) {
@@ -42,6 +80,8 @@ export function ReducerView({ reducer }: { reducer: Signal<DiceReducer> }): JSX.
           return ['average', null]
         case DiceReducer.Median:
           return ['median', null]
+        default:
+          throw new Error(`unreachable: ${JSON.stringify(r)}`)
       }
     })}
     sum={() => <></>}
@@ -52,7 +92,7 @@ export function ReducerView({ reducer }: { reducer: Signal<DiceReducer> }): JSX.
   />
 }
 
-export function DieView({ die }: { die: Signal<DieResult> }): JSX.DOMNode {
+export function DieView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode {
   return <div class="die">DieView TODO</div>
   /*
       var r = 'roll${Math.ceil(Math.random() * 5)}';
@@ -72,7 +112,7 @@ export function DieView({ die }: { die: Signal<DieResult> }): JSX.DOMNode {
       */
 }
 
-export function OpView({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
+export function OpView ({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
   return op.map(op => {
     switch (op) {
       case DiceBinOp.Sum:
@@ -83,11 +123,13 @@ export function OpView({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
         return '×'
       case DiceBinOp.Division:
         return '÷'
+      default:
+        throw new Error('unreachable')
     }
   })
 }
 
-export function DetailsView({ result, children }: { result: Signal<number>, children: JSX.DOMNode }): JSX.DOMNode {
+export function DetailsView ({ result, children }: { result: Signal<number>, children: JSX.DOMNode }): JSX.DOMNode {
   return (
     <div class="pair">
       <div class="result">{result}</div>
@@ -95,4 +137,3 @@ export function DetailsView({ result, children }: { result: Signal<number>, chil
     </div>
   )
 }
-
