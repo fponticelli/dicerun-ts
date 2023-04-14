@@ -1,4 +1,4 @@
-import { type JSX, OneOf, type Signal } from '@tempots/dom'
+import { type JSX, type Signal, OneOfUnionType } from '@tempots/dom'
 import { type Expression, type ParseError, type ParsedInvalid } from '../state'
 import { Action } from '../action'
 import { Editable } from './Editable'
@@ -18,8 +18,8 @@ export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.
           autofocus
         />
       </div>
-      <OneOf
-        match={expr.map(e => [e.type, e as any])}
+      <OneOfUnionType
+        match={expr}
         parse-error={(e: Signal<ParseError>) => (<ParseErrorView />)}
         parsed={() => <></>}
         unparsed={() => <></>}

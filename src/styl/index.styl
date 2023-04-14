@@ -151,11 +151,20 @@ body
   display: flex
   flex-direction: column
 
-.result
-  border-bottom: 1px solid #ccc
-  font-size: 1rem
+.roll-box
+  line-height: 2rem
 
-.details
+.result
+  // border-bottom: 1px solid #ccc
+  font-size: 1rem
+  position: relative
+  &:after
+    color: #aaa
+    position: absolute
+    top: 12px
+    margin: 0 auto
+    content: "="
+    left: calc(50% - 4px)
 
 .binop
   display: flex
@@ -270,7 +279,7 @@ body
   font-size: 0.8rem
 
 .text-editor
-  width: 100%
+  width: 80px
   padding: 0 4px
   background-color: #f6f6f6
   display: inline-block
@@ -278,6 +287,9 @@ body
   text-align: center
   border: none
   border-bottom: 1px dashed #bbb
+.expression-input
+  .text-editor
+    width: 100%
 
 .roll-seed
   display: flex
@@ -288,7 +300,6 @@ body
   .text-editor
     color: #999
     font-size: 0.8rem
-    width: auto
 
 .text-editor:focus
   outline: none

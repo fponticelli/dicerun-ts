@@ -78,16 +78,16 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
         <SeedControls useSeed={state.at('useSeed')} seed={state.at('seed')} updateSeed={updateSeed} toggleSeed={toggleSeed} />
       </div>
       <OneOf
-        match={state.at('expression').map((expr): ['many', null] | ['details', null] | ['empty', null] => {
+        match={state.at('expression').map((expr) => {
           if (expr.type === 'parsed') {
             const r = DE.calculateBasicRolls(expr.expr)
             if (r > DISPLAY_ROLLS_THRESHOLD) {
-              return ['many', null]
+              return { many: null }
             } else {
-              return ['details', null]
+              return { details: null }
             }
           } else {
-            return ['empty', null]
+            return { empty: null }
           }
         })}
         many={() => <div class="roll-details">Too many dice to display</div>}

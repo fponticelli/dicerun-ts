@@ -1,5 +1,4 @@
 import { Prop, type JSX, OneOf, type Signal } from '@tempots/dom'
-import { StyleProvider } from '@tempots/ui'
 import { RemoteMarkdown } from './components/Markdown'
 import { ExpressionInput } from './components/ExpressionInput'
 import { RollView } from './components/RollView'
@@ -33,7 +32,7 @@ function makeDispatchHash (dispatch: (action: Action) => void): () => void {
 }
 
 export const App = (): JSX.DOMNode => {
-  return <StyleProvider><Content /></StyleProvider>
+  return <Content />
 }
 
 export const Content = (): JSX.DOMNode => {
@@ -57,9 +56,9 @@ export const Content = (): JSX.DOMNode => {
           match={state.at('expression').map((v: Expression) => {
             switch (v.type) {
               case 'parsed':
-                return ['parsed', v] as ['parsed', Parsed]
+                return { parsed: v }
               default:
-                return ['otherwise', null] as ['otherwise', null]
+                return { otherwise: null }
             }
           })}
           parsed={((v: Signal<Parsed>) => <RollView dispatch={dispatch} state={state} />) as any}
@@ -71,9 +70,9 @@ export const Content = (): JSX.DOMNode => {
           match={state.at('expression').map((v: Expression) => {
             switch (v.type) {
               case 'parsed':
-                return ['parsed', v] as ['parsed', Parsed]
+                return { parsed: v }
               default:
-                return ['otherwise', null] as ['otherwise', null]
+                return { otherwise: null }
             }
           })}
           parsed={((v: Signal<Parsed>) => <ProbabilitiesView parsed={v} />) as any}

@@ -861,7 +861,12 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@tempots/dom@5.0.2", "@tempots/dom@^5.0.2":
+"@tempots/dom@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-6.0.0.tgz#a9440184bc061499ad6ce9d0bdb4f69d29c2f3ac"
+  integrity sha512-KiB2QOiSCVnd/b/vkZXAmCu9V7+JJz9DIFslbRG82FHburu4jWMbKZl/OFcS3pIp9YzEUJzOASTYuHjDg/uD3g==
+
+"@tempots/dom@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-5.0.2.tgz#100096ce9e14e96d95f21b6744732a339778baf2"
   integrity sha512-/UDwiWHA2IMcnsNBkaQN0IFj8To6QZdGKHZIrij8fupSjd0Z2J8Ol/PA6mUpFaRVFfsCFuiYfJ7bXZBWkbLYfQ==
@@ -1524,10 +1529,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-dicerollerts@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.3.0.tgz#c318649ba3525905f469886479197d9e35d2d31d"
-  integrity sha512-ET9EO4uLfmRY1U2bOi8jpW62ONbSGWR6FS7qrukGy9XfOqwTWfYDgGDZk+tIvRyrSTaZbxhlDpjD8EZ40yVAgw==
+dicerollerts@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.4.0.tgz#02a8091ae363fe77cdf0d4a4b20f8f0ae8e19197"
+  integrity sha512-qtNGEkzfz/TPXnVm4gC/yJL9Lnh4um47mFT/1tUrnL4qFx85Enubegbdwb/ue8li/rC9rutLQSWzN4DOHw96Ig==
   dependencies:
     partsing "^0.7.3"
 
