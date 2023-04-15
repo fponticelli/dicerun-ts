@@ -58,6 +58,7 @@ body
 
 .split
   display: flex
+  gap: 8px
 
 .roll-details
   display: flex
@@ -146,29 +147,35 @@ body
   justify-content: center
   display: flex
   padding: 1rem 0 0.5rem
+  gap: 12px
 
 .pair
   display: flex
   flex-direction: column
 
-.roll-box
-  line-height: 2rem
+// .roll-box
+//   line-height: 2rem
 
 .result
-  // border-bottom: 1px solid #ccc
+  border-bottom: 1px solid #ccc
   font-size: 1rem
   position: relative
-  &:after
-    color: #aaa
-    position: absolute
-    top: 12px
-    margin: 0 auto
-    content: "="
-    left: calc(50% - 4px)
+  // &:after
+  //   color: #bbb
+  //   position: absolute
+  //   top: 12px
+  //   margin: 0 auto
+  //   content: "="
+  //   left: calc(50% - 4px)
 
-.binop
+// .reduce
+//   display: flex
+//   gap: 4px
+
+.binop, .unop
   display: flex
   flex-direction: row
+  gap: 4px
 
 .left, .right
   flex: 1
@@ -176,8 +183,9 @@ body
 .op
   flex: 0.1
 
-.dice-set
+.dice-set, .explode, .reroll
   display: flex
+  gap: 2px
 
 .dice-set > *
   flex: 1
@@ -193,7 +201,7 @@ body
   color: #000
   position: relative
 
-.roll-details .discard .result:before
+.discard .result:before
   content: ""
   display: block
   position: absolute
