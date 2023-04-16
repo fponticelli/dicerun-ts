@@ -2,7 +2,7 @@
 
 Type your dice expression in the gray box at the top of this page.
 
-The simplest expression is [`d`](#/d/d) which means roll one die with 6 faces. You can be more explicit and input [`1d6`](#/d/1d6) or  [`d6`](#/d/d6). Of course you can roll multiple dice ([`3d6`](#/d/3d6)) and with different number of sides [`2d10`](#/d/2d10). The popular [`d100`](#/d/d100) (a percent die) can also be expressed as [`d%`](#/d/d%).
+The simplest expression is [`d`](#/d/d) which means roll one die with 6 faces. You can be more explicit and input [`1d6`](#/d/1d6) or [`d6`](#/d/d6). Of course you can roll multiple dice ([`3d6`](#/d/3d6)) and with different number of sides [`2d10`](#/d/2d10). The popular [`d100`](#/d/d100) (a percent die) can also be expressed as [`d%`](#/d/d%).
 
 # Math Operations
 
@@ -18,7 +18,7 @@ You can use an expression set to force the order of arithmetic operations: [`(3d
 
 # Filtering
 
-It is also possible to peform filtering operations on a set of expressions like *drop* and *keep*. Drop will only keep the values that do not match a condition: [`4d6 drop lowest 1`](#/d/4d6_drop_lowest_1). For *drop* the default matching condition is *lowest* so you can omit it: [`4d6 drop 1`](#/d/4d6_drop_1). *Keep* will retain by default the top `N` values. [`4d6 keep 3`](#/d/4d6_keep_3) is basically equivalent to the `drop 1` above. You can be explicit and state [`4d6 keep highest 3`](#/d/4d6_keep_highest_3).
+It is also possible to peform filtering operations on a set of expressions like *drop* and *keep*. Drop will only select the values that do not match a condition: [`4d6 drop lowest 1`](#/d/4d6_drop_lowest_1). For *drop* the default matching condition is *lowest* so you can omit it: [`4d6 drop 1`](#/d/4d6_drop_1). *Keep* will retain by default the top `N` values. [`4d6 keep 3`](#/d/4d6_keep_3) is basically equivalent to the `drop 1` above. You can be explicit and state [`4d6 keep highest 3`](#/d/4d6_keep_highest_3).
 
 Drop and keep can abbreviated:
 
@@ -33,7 +33,7 @@ A dice set can be composed of dice with different denominations [`(d2,d4,d6,d8,d
 
 # Explode / Reroll
 
-Some games require exploding rolls or rerolls. An exploding dice is rolled again whenever its highest values is obtained. Results of all rolls are then summed together. dice.run supports the following syntax for exploding rolls: [`3d6 explode always on 5 or more`](#/d/3d6_explode_always_on_5_or_more). The short syntax for that is [`3d6e5`](#/d/3d6e5). If you want to limit the number of times the dice can explode, you can use [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more) or the syntax `n times` where `n` is any positive integer number (eg: [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more)). `or more` can be replaced with `or less` or omitted entirely to only explode on the exact value indicated in the expression.
+Some games require exploding rolls or rerolls. An exploding dice is rolled again whenever a certain value is obtained. Results of all rolls are then summed together. dice.run supports the following syntax for exploding rolls: [`3d6 explode always on 5 or more`](#/d/3d6_explode_always_on_5_or_more). The short syntax for that is [`3d6e5`](#/d/3d6e5). If you want to limit the number of times the dice can explode, you can use [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more) or the syntax `n times` where `n` is any positive integer number (eg: [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more)). `or more` can be replaced with `or less` or omitted entirely to only explode on the exact value indicated in the expression.
 
 Reroll works the same [`3d6 reroll always on 2 or less`](#/d/3d6_reroll_always_on_2_or_less) and the short format is [`3d6r2`](#/d/3d6r2).
 
