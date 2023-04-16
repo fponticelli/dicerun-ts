@@ -1,11 +1,13 @@
 import { type ValidationMessage, type DiceExpression, type RollResult } from 'dicerollerts'
 import { type DecodeError } from 'partsing/error'
+import { type ProbabilitiesResult } from './utils/probabilities-result'
 
 export interface State {
   expression: Expression
   seed: number
   useSeed: boolean
   roll: RollResult | null
+  probabilities: ProbabilitiesResult | null
 }
 
 export interface Unparsed {

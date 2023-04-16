@@ -29,8 +29,8 @@ export class ProbabilitiesResult {
 
   public static fromObject (o: Record<string, any>): ProbabilitiesResult {
     const p = new ProbabilitiesResult()
-    p.count = Reflect.get(o, 'count')
-    const ob = Reflect.get(o, 'values')
+    p.count = o.count
+    const ob = o.values
     const fields = Reflect.ownKeys(ob) as string[]
     for (const f of fields) {
       p.map.set(parseInt(f), Reflect.get(ob, f))
@@ -86,12 +86,12 @@ class ProbabilitiesStats {
     }
   }
 
-  public map<T>(f: (sample: Sample) => T): T[] {
+  public getSamples (): Sample[] {
     let accWeight = 0
     let revWeight = this.total
-    const sample = new Sample(0, 0, accWeight, revWeight, this.minValue, this.maxValue, this.minWeight, this.maxWeight, this.total)
     const buf = []
     for (let i = this.minValue; i < this.maxValue + 1; i++) {
+      const sample = new Sample(0, 0, accWeight, revWeight, this.minValue, this.maxValue, this.minWeight, this.maxWeight, this.total)
       sample.value = i
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       sample.weight = this.table.has(i) ? this.table.get(i)! : 0
@@ -99,7 +99,7 @@ class ProbabilitiesStats {
       sample.accWeight = accWeight
       sample.revWeight = revWeight
       revWeight -= sample.weight
-      buf.push(f(sample))
+      buf.push(sample)
     }
     return buf
   }

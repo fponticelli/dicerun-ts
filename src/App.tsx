@@ -7,6 +7,10 @@ import { JumpersRibbon } from './components/JumpersRibbon'
 import { Expression, type Parsed, type State } from './state'
 import { reduce } from './reducer'
 import { Action } from './action'
+import { getSerializedProbabilitiesFromLocalStorage, setProbabilitiesInLocalStorage } from './utils/expression-storage'
+import { ProbabilitiesResult } from './utils/probabilities-result'
+
+const worker = new Worker(new URL('./workers/dice-worker.ts', import.meta.url), { type: 'module' })
 
 function prettify (s: string): string {
   return s.replaceAll('_', ' ')
@@ -35,14 +39,51 @@ export const App = (): JSX.DOMNode => {
   return <Content />
 }
 
+export const statsMiddleware = (dispatch: (action: Action) => void): (expression: Expression) => void => {
+  worker.onmessage = (e) => {
+    const { type, data } = e.data
+    switch (type) {
+      case 'probabilities-result':
+      {
+        const obj = data.data
+        const probabilities = ProbabilitiesResult.fromObject(obj)
+        setProbabilitiesInLocalStorage(data.expression, obj)
+        dispatch(Action.setProbabilities(probabilities))
+      }
+    }
+  }
+  worker.onerror = (e) => {
+    console.error('WORKER ERROR', e)
+  }
+  worker.postMessage({
+    type: 'init',
+    data: getSerializedProbabilitiesFromLocalStorage()
+  })
+
+  return (expression: Expression): void => {
+    if (expression.type !== 'parsed') {
+      return
+    }
+    const { normalized } = expression
+    worker.postMessage({
+      type: 'evaluate-expression',
+      data: {
+        expression: normalized
+      }
+    })
+  }
+}
+
 export const Content = (): JSX.DOMNode => {
   const state = Prop.of<State>({
     expression: Expression.unparsed(''),
     seed: 1234567890,
     useSeed: false,
-    roll: null
+    roll: null,
+    probabilities: null
   })
   const dispatch = state.reducer(reduce)
+  state.at('expression').subscribe(statsMiddleware(dispatch))
   const dispatchHash = makeDispatchHash(dispatch)
   window.onhashchange = dispatchHash
   dispatchHash()
@@ -67,17 +108,15 @@ export const Content = (): JSX.DOMNode => {
       </div>
       <div class="body">
         <OneOf
-          match={state.at('expression').map((v: Expression) => {
-            switch (v.type) {
-              case 'parsed':
-                return { parsed: v }
-              default:
-                return { otherwise: null }
+          match={state.at('probabilities').map(p => {
+            if (p === null) {
+              return { empty: null }
             }
+            return { probabilities: p }
           })}
-          parsed={((v: Signal<Parsed>) => <ProbabilitiesView parsed={v} />) as any}
-          otherwise={() => <></>}
-        />
+          empty={() => <>Nothing</>}
+          probabilities={(p: Signal<ProbabilitiesResult>) => <ProbabilitiesView probabilities={p} />}
+          />
         <div class="description text-content">
           <RemoteMarkdown url="data/description.md" />
         </div>

@@ -8,7 +8,12 @@ function randomRoller (sides: number): number {
 }
 
 function makeLemherRoller (seed: number): (sides: number) => number {
-  return (sides) => Math.floor(new LehmerSeed(seed).float() * sides) + 1
+  let lSeed = new LehmerSeed(seed)
+  return (sides) => {
+    const result = Math.floor(lSeed.float() * sides) + 1
+    lSeed = lSeed.next()
+    return result
+  }
 }
 
 function roll (state: State): [RollResult | null, number | null] {
@@ -36,7 +41,8 @@ export function reduce (state: State, action: Action): State {
         return {
           ...state,
           roll: null,
-          expression: Expression.parseError(action.expr, result.failures)
+          expression: Expression.parseError(action.expr, result.failures),
+          probabilities: null
         }
       } else {
         const validated = DE.validate(result.value)
@@ -47,13 +53,15 @@ export function reduce (state: State, action: Action): State {
             ...state,
             roll: rollResult,
             seed: nextSeed ?? state.seed,
-            expression
+            expression,
+            probabilities: null
           }
         } else {
           return {
             ...state,
             roll: null,
-            expression: Expression.parsedInvalid(action.expr, validated, result.value)
+            expression: Expression.parsedInvalid(action.expr, validated, result.value),
+            probabilities: null
           }
         }
       }
@@ -65,13 +73,15 @@ export function reduce (state: State, action: Action): State {
     }
     case 'toggle-use-seed':
     {
-      const [rollResult, nextSeed] = roll({ ...state, useSeed: !state.useSeed })
-      return { ...state, useSeed: !state.useSeed, roll: rollResult, seed: nextSeed ?? state.seed }
+      const [rollResult] = roll({ ...state, useSeed: !state.useSeed })
+      return { ...state, useSeed: !state.useSeed, roll: rollResult }
     }
     case 'roll':
     {
       const [rollResult, nextSeed] = roll(state)
       return { ...state, roll: rollResult, seed: nextSeed ?? state.seed }
     }
+    case 'set-probabilities':
+      return { ...state, probabilities: action.probabilities }
   }
 }

@@ -12,6 +12,7 @@
   "dependencies": {
     "@tempots/dom": "7.0.0",
     "@tempots/ui": "0.1.0",
+    "comlink": "^4.4.1",
     "dicerollerts": "^0.4.0",
     "marked": "^4.3.0",
     "nano-markdown": "^1.2.2",
@@ -34,7 +35,8 @@
     "stylus": "^0.59.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.3",
-    "vite": "^4.2.1"
+    "vite": "^4.2.1",
+    "vite-plugin-comlink": "^3.0.5"
   },
   "repository": {
     "type": "git",
