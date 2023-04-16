@@ -6,6 +6,7 @@ import { ProbabilitiesResult } from './probabilities-result'
 const worker = new Worker(new URL('../workers/dice-worker.ts', import.meta.url), { type: 'module' })
 
 export const statsMiddleware = (dispatch: (action: Action) => void): (expression: Expression) => void => {
+  let currentExpression = ''
   worker.onmessage = (e) => {
     const { type, data } = e.data
     switch (type) {
@@ -14,7 +15,9 @@ export const statsMiddleware = (dispatch: (action: Action) => void): (expression
         const obj = data.data
         const probabilities = ProbabilitiesResult.fromObject(obj)
         setProbabilitiesInLocalStorage(data.expression, obj)
-        dispatch(Action.setProbabilities(probabilities))
+        if (currentExpression === data.expression) {
+          dispatch(Action.setProbabilities(probabilities))
+        }
       }
     }
   }
@@ -30,6 +33,7 @@ export const statsMiddleware = (dispatch: (action: Action) => void): (expression
     if (expression.type !== 'parsed') {
       return
     }
+    currentExpression = expression.normalized
     const { normalized } = expression
     worker.postMessage({
       type: 'evaluate-expression',

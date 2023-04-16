@@ -29,12 +29,11 @@ export const initData = (data: Record<string, string>): void => {
   postMessage({ type: 'init-done', data: {} })
 }
 
-let canceled = false
-let currentExpr = ''
+let cancel = (): void => {}
+
 export const evaluateExpression = (expr: string): void => {
+  cancel()
   postMessage({ type: 'probabilities-start', data: { expression: expr } })
-  canceled = currentExpr !== expr
-  currentExpr = expr
   let worker = cache.get(expr)
   if (worker == null) {
     worker = DiceWorkerData.create(expr)
@@ -43,27 +42,25 @@ export const evaluateExpression = (expr: string): void => {
   postMessage({ type: 'probabilities-progress', data: { expression: expr, count: worker.results.count, max: MAXRUNS } })
   if (worker.results.count >= MAXRUNS) {
     postMessage({ type: 'probabilities-result', data: { data: worker.results.toObject(), expression: expr } })
-    canceled = false
   } else {
     run(expr, worker)
-    canceled = false
   }
 }
 
 function run (expr: string, worker: DiceWorkerData): void {
   const now = performance.now()
   const endOn = now + RUNTIME
-  postMessage({ type: 'run', data: { now, endOn, canceled } })
+  postMessage({ type: 'run', data: { now, endOn } })
   while (true) {
     worker.roll()
     if (worker.results.count === MAXRUNS) break
     if (performance.now() >= endOn) break
-    // if (canceled) return
   }
   postMessage({ type: 'probabilities-result', data: { data: worker.results.toObject(), expression: expr } })
   if (worker.results.count < MAXRUNS) {
-    run(expr, worker)
-    // setTimeout((): void => { run(expr, worker) }, 0)
+    // run(expr, worker)
+    const cancelId = setTimeout((): void => { run(expr, worker) }, 0)
+    cancel = (): void => { clearTimeout(cancelId) }
   }
 }
 
