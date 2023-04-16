@@ -7,22 +7,9 @@ import { JumpersRibbon } from './components/JumpersRibbon'
 import { Expression, type Parsed, type State } from './state'
 import { reduce } from './reducer'
 import { Action } from './action'
-import { getSerializedProbabilitiesFromLocalStorage, setProbabilitiesInLocalStorage } from './utils/expression-storage'
-import { ProbabilitiesResult } from './utils/probabilities-result'
-
-const worker = new Worker(new URL('./workers/dice-worker.ts', import.meta.url), { type: 'module' })
-
-function prettify (s: string): string {
-  return s.replaceAll('_', ' ')
-}
-
-function trimCharsLeft (s: string, chars: string): string {
-  let i = 0
-  while (i < s.length && chars.includes(s.charAt(i))) {
-    i++
-  }
-  return s.substring(i)
-}
+import { type ProbabilitiesResult } from './utils/probabilities-result'
+import { prettify, trimCharsLeft } from './utils/strings'
+import { statsMiddleware } from './utils/stats-middleware'
 
 function makeDispatchHash (dispatch: (action: Action) => void): () => void {
   return () => {
@@ -37,41 +24,6 @@ function makeDispatchHash (dispatch: (action: Action) => void): () => void {
 
 export const App = (): JSX.DOMNode => {
   return <Content />
-}
-
-export const statsMiddleware = (dispatch: (action: Action) => void): (expression: Expression) => void => {
-  worker.onmessage = (e) => {
-    const { type, data } = e.data
-    switch (type) {
-      case 'probabilities-result':
-      {
-        const obj = data.data
-        const probabilities = ProbabilitiesResult.fromObject(obj)
-        setProbabilitiesInLocalStorage(data.expression, obj)
-        dispatch(Action.setProbabilities(probabilities))
-      }
-    }
-  }
-  worker.onerror = (e) => {
-    console.error('WORKER ERROR', e)
-  }
-  worker.postMessage({
-    type: 'init',
-    data: getSerializedProbabilitiesFromLocalStorage()
-  })
-
-  return (expression: Expression): void => {
-    if (expression.type !== 'parsed') {
-      return
-    }
-    const { normalized } = expression
-    worker.postMessage({
-      type: 'evaluate-expression',
-      data: {
-        expression: normalized
-      }
-    })
-  }
 }
 
 export const Content = (): JSX.DOMNode => {
