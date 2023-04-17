@@ -1,9 +1,10 @@
-import { type JSX, type Signal, OneOfUnionType, For, conjuctions } from '@tempots/dom'
+import { type JSX, type Signal, OneOfUnionType, For, conjuctions, When, Prop } from '@tempots/dom'
 import { type Expression, type ParseError, type ParsedInvalid } from '../state'
 import { Action } from '../action'
 import { Editable } from './Editable'
 import { type DecodeError } from 'partsing/error'
 import { type ValidationMessage } from 'dicerollerts'
+import { Tooltip } from './Tooltip'
 
 export interface ExpressionInputProps {
   dispatch: (action: Action) => void
@@ -11,14 +12,21 @@ export interface ExpressionInputProps {
 }
 
 export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.DOMNode {
+  const displayTooltip = Prop.ofLocalStorage('dice.run-tooltip-expression-input', true)
   return (
     <div>
       <div class="expression-input">
         <Editable
           value={expr.at('source')}
-          onChange={v => { dispatch(Action.evaluateExpression(v)) }}
+          onChange={v => {
+            displayTooltip.set(false)
+            dispatch(Action.evaluateExpression(v))
+          }}
           autofocus
-        />
+          />
+        <When is={displayTooltip}>
+          <Tooltip>type a dice expression here</Tooltip>
+        </When>
       </div>
       <OneOfUnionType
         match={expr}

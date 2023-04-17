@@ -4,6 +4,7 @@ import { Action } from '../action'
 import { DE, RR } from 'dicerollerts'
 import { Editable } from './Editable'
 import { RollDetailsView } from './RollDetailsView'
+import { Tooltip } from './Tooltip'
 
 export interface RollViewProps {
   dispatch: (action: Action) => void
@@ -53,6 +54,7 @@ function animateIntSignal (signal: Signal<number>, initial: number | undefined =
 export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
   const updateSeed = (seed: number): void => { dispatch(Action.updateSeed(seed)) }
   const toggleSeed = (): void => { dispatch(Action.toggleUseSeed()) }
+  const displayTooltip = Prop.ofLocalStorage('dice.run-tooltip-roll', true)
   const roll = (): void => { dispatch(Action.roll()) }
   const result = animateIntSignal(state.at('roll').map(v => {
     if (v == null) {
@@ -68,12 +70,16 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
           <a
             onClick={(e) => {
               e.preventDefault()
+              displayTooltip.set(false)
               roll()
             }}
             href="#"
           >
             {result}
           </a>
+          <When is={displayTooltip}>
+            <Tooltip>click here to roll again</Tooltip>
+          </When>
         </div>
         <SeedControls useSeed={state.at('useSeed')} seed={state.at('seed')} updateSeed={updateSeed} toggleSeed={toggleSeed} />
       </div>

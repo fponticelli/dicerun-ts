@@ -861,10 +861,10 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@tempots/dom@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-7.0.0.tgz#81cbf8ff9d5ff1ea26e87334887e5cd19a214675"
-  integrity sha512-9cy787blXFSQZYEnawRhw0LSOEtkhFl4feHjFJtW4I63vaGFUywUnhtgKyAr1HmbqC2L/S1Ju7obUm3wno0Jbw==
+"@tempots/dom@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-7.1.1.tgz#1f539a9297b4259b3ecfca4bb54ffbd1c4fe2989"
+  integrity sha512-7cXQyd8HuZQcXk+Tro7P8Lz0roJHXaycZ07XLopaNn0c6bucGj+BLo7sWSyAIjXh8ULPR38izyJ+Iqkg2IwQJw==
 
 "@tempots/dom@^5.0.2":
   version "5.0.2"
