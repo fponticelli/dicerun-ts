@@ -5,6 +5,18 @@ import { ProbabilitiesResult } from './probabilities-result'
 
 const worker = new Worker(new URL('../workers/dice-worker.ts', import.meta.url), { type: 'module' })
 
+function updateUrl (source: string): void {
+  const hash = `/d/${source.replaceAll(' ', '_')}`
+  if (location.hash === hash) return
+  location.hash = hash
+  updateGoogleAnalytics(hash)
+}
+
+function updateGoogleAnalytics (s: string): void {
+  ((window as any).ga)('set', 'page', s);
+  ((window as any).ga)('send', 'pageview')
+}
+
 export const statsMiddleware = (dispatch: (action: Action) => void): (expression: Expression) => void => {
   let currentExpression = ''
   worker.onmessage = (e) => {
@@ -33,8 +45,10 @@ export const statsMiddleware = (dispatch: (action: Action) => void): (expression
     if (expression.type !== 'parsed') {
       return
     }
-    currentExpression = expression.normalized
+
     const { normalized } = expression
+    currentExpression = normalized
+    updateUrl(normalized)
     worker.postMessage({
       type: 'evaluate-expression',
       data: {

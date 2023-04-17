@@ -1,7 +1,9 @@
-import { type JSX, type Signal, OneOfUnionType } from '@tempots/dom'
+import { type JSX, type Signal, OneOfUnionType, For, conjuctions } from '@tempots/dom'
 import { type Expression, type ParseError, type ParsedInvalid } from '../state'
 import { Action } from '../action'
 import { Editable } from './Editable'
+import { type DecodeError } from 'partsing/error'
+import { type ValidationMessage } from 'dicerollerts'
 
 export interface ExpressionInputProps {
   dispatch: (action: Action) => void
@@ -20,47 +22,57 @@ export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.
       </div>
       <OneOfUnionType
         match={expr}
-        parse-error={(e: Signal<ParseError>) => (<ParseErrorView />)}
+        parse-error={(e: Signal<ParseError>) => (<ParseErrorView errors={e.at('err')} />)}
         parsed={() => <></>}
         unparsed={() => <></>}
-        parsed-invalid={(e: Signal<ParsedInvalid>) => <ValidationErrors />}
+        parsed-invalid={(e: Signal<ParsedInvalid>) => <ValidationErrors errors={e.at('errors')} />}
       />
     </div>
   )
 }
 
-export interface ParseErrorProps { }
+export interface ParseErrorProps {
+  errors: Signal<DecodeError[]>
+}
 
-export function ParseErrorView (props: ParseErrorProps): JSX.DOMNode {
+export function ParseErrorView ({ errors }: ParseErrorProps): JSX.DOMNode {
   return (
     <div class="error">
-      <span class="label">msg.expectedOneOf TODO</span>
+      <span class="label">Parse error with</span>
       <br />
       <span class="expected">
-        expected errors separated by comma TODO
+        <For of={errors.map(v => Array.from(new Set(v)))} separator={conjuctions(', ')}>
+          {(err: Signal<DecodeError>) => <span>{err.map(e => e.toString())}</span>}
+        </For>
       </span>
-      <br />
-      <span class="label">msg.found TODO</span>
-      if err.positionToString is null TODO
-      <span class="eof">msg.endOfFile TODO</span>
-      else
-      <br />
-      <span class="got">content TODO</span>
     </div>
   )
 }
 
-export interface ValidationErrorsProps { }
+export interface ValidationErrorsProps {
+  errors: Signal<ValidationMessage[]>
+}
 
-export function ValidationErrors (props: ValidationErrorsProps): JSX.DOMNode {
+export function ValidationErrors ({ errors }: ValidationErrorsProps): JSX.DOMNode {
   return (
     <div class="error">
       <div>
         <div class="validation-prefix">
-          msg.validationPrefix.sampleOne() TODO
+          Validation error
         </div>
         <div class="validation-messages">
-          TODO render validation errors ForEach with ValidationMessage
+          <For of={errors.map(v => Array.from(new Set(v)))} separator={conjuctions(', ')}>
+            {(err: Signal<ValidationMessage>) =>
+              <OneOfUnionType match={err}
+                drop-or-keep-should-be-positive={() => <span>Drop or Keep should be a positive number</span>}
+                empty-set={() => <span>Empty set</span>}
+                infinite-reroll={() => <span>Infinite rerolls</span>}
+                too-many-drops={() => <span>Too many drops</span>}
+                too-many-keeps={() => <span>Too many keeps</span>}
+                insufficient-sides={() => <span>Insufficient sides</span>}
+              />
+            }
+          </For>
         </div>
       </div>
     </div>

@@ -91,7 +91,6 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
           }
         })}
         many={() => <div class="roll-details">Too many dice to display</div>}
-        // TODO
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         details={() => <RollDetailsView result={state.at('roll').map(v => v!)} />}
         empty={() => <div class="roll-details">Enter an expression to roll</div>}

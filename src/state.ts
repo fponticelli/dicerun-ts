@@ -25,7 +25,7 @@ export interface Parsed {
 export interface ParsedInvalid {
   type: 'parsed-invalid'
   source: string
-  errors: ValidationMessage[] // TODO why is this different from Error?
+  errors: ValidationMessage[]
   expr: DiceExpression
 }
 

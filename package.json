@@ -12,7 +12,7 @@
   "dependencies": {
     "@tempots/dom": "7.0.0",
     "@tempots/ui": "0.1.0",
-    "dicerollerts": "^0.4.0",
+    "dicerollerts": "^0.5.0",
     "marked": "^4.3.0",
     "nano-markdown": "^1.2.2",
     "partsing": "^0.7.3"
