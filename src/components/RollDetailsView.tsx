@@ -304,7 +304,11 @@ export function ReducerView ({ reducer }: { reducer: Signal<DiceReducer> }): JSX
 }
 
 function randomRoll (): string {
-  return `roll${Math.ceil(Math.random() * 5)}`
+  return `roll roll${Math.ceil(Math.random() * 5)}`
+}
+
+function randomAnimationName (): string {
+  return `--roll-name: r${Math.ceil(Math.random() * 100)};`
 }
 
 export function DieResultView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode {
@@ -318,7 +322,7 @@ export function DieResultView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode
     d6={
       (result: Signal<DieResult>) => {
         return <div class="die-container">
-          <div class="die-icon roll">
+          <div class="die-icon">
             <ClassName value={r} />
             <i>
               <ClassName value={result.map(d => `df-dot-d6-${d.result}`)} />
@@ -330,7 +334,7 @@ export function DieResultView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode
     poliedra={
       (result: Signal<DieResult>) => {
         return <div class="die-container">
-          <div class="die-icon roll">
+          <div class="die-icon">
             <ClassName value={r} />
             <i>
               <ClassName value={result.map(d => `df-d${d.sides}-${d.result}`)} />
