@@ -304,11 +304,7 @@ export function ReducerView ({ reducer }: { reducer: Signal<DiceReducer> }): JSX
 }
 
 function randomRoll (): string {
-  return `roll roll${Math.ceil(Math.random() * 5)}`
-}
-
-function randomAnimationName (): string {
-  return `--roll-name: r${Math.ceil(Math.random() * 100)};`
+  return `roll roll${Math.ceil(Math.random() * 10)}`
 }
 
 export function DieResultView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode {
