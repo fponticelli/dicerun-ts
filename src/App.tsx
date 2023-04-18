@@ -72,6 +72,9 @@ export const Content = (): JSX.DOMNode => {
         <div class="description text-content">
           <RemoteMarkdown url="data/description.md" />
         </div>
+        {/* <div class="banner">
+          <div id="amzn-assoc-ad-04f038ac-fa7c-4a9f-8608-593f2980953c"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=04f038ac-fa7c-4a9f-8608-593f2980953c"></script>
+        </div> */}
         <div class="footer text-content">
           <RemoteMarkdown url="data/footer.md" />
         </div>

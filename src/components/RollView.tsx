@@ -13,42 +13,12 @@ export interface RollViewProps {
 
 const DISPLAY_ROLLS_THRESHOLD = 50
 
-function lerpf (a: number, b: number, t: number): number {
-  return a + (b - a) * t
+export function lerpi (a: number, b: number, t: number): number {
+  return Math.round(a + (b - a) * t)
 }
 
-function animateSignal<T> (
-  signal: Signal<T>,
-  interpolate: (start: T, end: T, t: number) => T,
-  initial: T | undefined = undefined,
-  duration: number = 200
-): Signal<T> {
-  const prop = Prop.of(initial ?? signal.get())
-  signal.subscribe(v => {
-    const start = prop.get()
-    const end = v
-    const startAt = Date.now()
-    const endAt = startAt + duration
-    const step = (): void => {
-      const now = Date.now()
-      if (now >= endAt) {
-        prop.set(end)
-      } else {
-        prop.set(interpolate(start, end, (now - startAt) / duration))
-        requestAnimationFrame(step)
-      }
-    }
-    requestAnimationFrame(step)
-  })
-  return prop
-}
-
-// function animateNumberSignal (signal: Signal<number>, initial: number | undefined = undefined, duration: number = 200): Signal<number> {
-//   return animateSignal(signal, lerpf, initial, duration)
-// }
-
-function animateIntSignal (signal: Signal<number>, initial: number | undefined = undefined, duration: number = 200): Signal<number> {
-  return animateSignal(signal, (a, b, t) => Math.round(lerpf(a, b, t)), initial, duration)
+export function easeOutCubic (t: number): number {
+  return (--t) * t * t + 1
 }
 
 export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
@@ -56,13 +26,13 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
   const toggleSeed = (): void => { dispatch(Action.toggleUseSeed()) }
   const displayTooltip = Prop.ofLocalStorage('dice.run-tooltip-roll', true)
   const roll = (): void => { dispatch(Action.roll()) }
-  const result = animateIntSignal(state.at('roll').map(v => {
+  const result = state.at('roll').map(v => {
     if (v == null) {
       return 0
     } else {
       return RR.getResult(v)
     }
-  }))
+  }).animate(1000, lerpi, undefined, easeOutCubic)
   return (
     <div class="roll-box">
       <div class="rolling">

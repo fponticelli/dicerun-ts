@@ -46,9 +46,9 @@ export const statsMiddleware = (dispatch: (action: Action) => void): (expression
       return
     }
 
-    const { normalized } = expression
+    const { normalized, source } = expression
     currentExpression = normalized
-    updateUrl(normalized)
+    updateUrl(source)
     worker.postMessage({
       type: 'evaluate-expression',
       data: {

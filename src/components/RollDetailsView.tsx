@@ -1,5 +1,6 @@
 import { type JSX, type Signal, OneOfUnionType, OneOfLiteral, OneOf, ClassName, For, conjuctions, type PositionProps } from '@tempots/dom'
-import { type DiceBinOp, type DiceReducer, type OneResult, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Range, type Times, type Rerolled, type Exploded, type Normal, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo } from 'dicerollerts'
+import { type DiceBinOp, type DiceReducer, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Range, type Times, type Rerolled, type Exploded, type Normal, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo, type OneResult } from 'dicerollerts'
+import { easeOutCubic, lerpi } from './RollView'
 
 export interface RollDetailsViewProps {
   result: Signal<RollResult>
@@ -56,7 +57,7 @@ export function UnaryOpResultView ({ op }: { op: Signal<UnaryOpResult> }): JSX.D
 export function DiceReduceResultView ({ value }: { value: Signal<DiceReduceResult> }): JSX.DOMNode {
   return (
     <div class="reduce">
-      <div class="result">{value.at('result')}</div>
+      <div class="result">{value.at('result').animate(1000, lerpi, undefined, easeOutCubic)}</div>
       <div class="dice-set">
         <ReducerView reducer={value.at('reducer')} />
         <DiceReduceableResultView value={value.at('reduceables')} />
@@ -375,7 +376,7 @@ export function OpView ({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
 export function DetailsView ({ result, children }: { result: Signal<number>, children?: JSX.DOMNode }): JSX.DOMNode {
   return (
     <div class="pair">
-      <div class="result">{result}</div>
+      <div class="result">{result.animate(1000, lerpi, undefined, easeOutCubic)}</div>
       <div class="details">{children}</div>
     </div>
   )

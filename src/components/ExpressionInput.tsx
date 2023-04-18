@@ -71,7 +71,8 @@ export function ValidationErrors ({ errors }: ValidationErrorsProps): JSX.DOMNod
         <div class="validation-messages">
           <For of={errors.map(v => Array.from(new Set(v)))} separator={conjuctions(', ')}>
             {(err: Signal<ValidationMessage>) =>
-              <OneOfUnionType match={err}
+              <OneOfUnionType
+                match={err}
                 drop-or-keep-should-be-positive={() => <span>Drop or Keep should be a positive number</span>}
                 empty-set={() => <span>Empty set</span>}
                 infinite-reroll={() => <span>Infinite rerolls</span>}
