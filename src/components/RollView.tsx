@@ -90,7 +90,10 @@ export function SeedControls ({ useSeed, seed, updateSeed, toggleSeed }: SeedCon
         <span>use seed</span>
       </label>
       <When is={useSeed}>
-        <Editable value={seed.map(String)} onChange={v => { updateSeed(Math.trunc(Number(v))) }} />
+        <Editable
+          value={seed.map(String)}
+          onChange={v => { updateSeed(Number(v)) }}
+        />
       </When>
     </div>
   )

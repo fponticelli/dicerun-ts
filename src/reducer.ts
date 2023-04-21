@@ -3,6 +3,12 @@ import { type Action } from './action'
 import { Expression, type State } from './state'
 import { LehmerSeed } from './utils/lehmer-seed'
 
+function clampValueToInt32 (value: number): number {
+  const result = Math.trunc(Math.min(Math.max(value, 1), 2147483647))
+  console.log(result)
+  return result
+}
+
 function randomRoller (sides: number): number {
   return Math.floor(Math.random() * sides) + 1
 }
@@ -68,8 +74,9 @@ export function reduce (state: State, action: Action): State {
     }
     case 'update-seed':
     {
-      const [rollResult] = roll({ ...state, seed: action.value })
-      return { ...state, seed: action.value, roll: rollResult }
+      const seed = clampValueToInt32(action.value)
+      const [rollResult] = roll({ ...state, seed })
+      return { ...state, seed, roll: rollResult }
     }
     case 'toggle-use-seed':
     {
