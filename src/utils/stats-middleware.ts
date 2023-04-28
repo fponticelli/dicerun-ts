@@ -2,6 +2,7 @@ import { Action } from '../action'
 import { type Expression } from '../state'
 import { getSerializedProbabilitiesFromLocalStorage, setProbabilitiesInLocalStorage } from '../utils/expression-storage'
 import { ProbabilitiesResult } from './probabilities-result'
+import ReactGA from 'react-ga4'
 
 const worker = new Worker(new URL('../workers/dice-worker.ts', import.meta.url), { type: 'module' })
 
@@ -13,8 +14,8 @@ function updateUrl (source: string): void {
 }
 
 function updateGoogleAnalytics (s: string): void {
-  ((window as any).ga)('set', 'page', s);
-  ((window as any).ga)('send', 'pageview')
+  ReactGA.set({ page: s })
+  ReactGA.send({ hitType: 'pageview' })
 }
 
 export const statsMiddleware = (dispatch: (action: Action) => void): (expression: Expression) => void => {
