@@ -31,10 +31,12 @@ Simpler sets of dice like [`5d6`](#/d/5d6) are expanded into [`(d6,d6,d6,d6,d6)`
 
 A dice set can be composed of dice with different denominations [`(d2,d4,d6,d8,d10)`](#/d/(d2,d4,d6,d8,d10)). On the other hand a dice set can only be composed of nominal dice: [`(d6,2d8)`](#/d/(d6,2d8)) is NOT a dice set! It is still a valid expression set that can be reduced and filtered.
 
-# Explode / Reroll
+# Explode / Reroll / Emphasis
 
 Some games require exploding rolls or rerolls. An exploding dice is rolled again whenever a certain value is obtained. Results of all rolls are then summed together. dice.run supports the following syntax for exploding rolls: [`3d6 explode always on 5 or more`](#/d/3d6_explode_always_on_5_or_more). The short syntax for that is [`3d6e5`](#/d/3d6e5). If you want to limit the number of times the dice can explode, you can use [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more) or the syntax `n times` where `n` is any positive integer number (eg: [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more)). `or more` can be replaced with `or less` or omitted entirely to only explode on the exact value indicated in the expression.
 
 Reroll works the same [`3d6 reroll always on 2 or less`](#/d/3d6_reroll_always_on_2_or_less) and the short format is [`3d6r2`](#/d/3d6r2).
+
+[“Rolling With Emphasis”](https://homebrewery.naturalcrit.com/share/wyL-vuEIDrbC) is a mechanic introduced by Brennan Lee Mulligan, where you roll two dice and take the result furthest away from the average, which increases the likelihood for either a natural 1 or a max result. An example would be [`d20 emphasis`](#/d/d20_emphasis). By default, ties will be resolved by rerolling (can be explicit with [`d20 emphasis reroll`](#/d/d20_emphasis_reroll)) but you can also pick the lowest or highest value with [`d20 emphasis low`](#/d/d20_emphasis_low) or [`d20 emphasis high`](#/d/d20_emphasis_high). If you don't want to use the average, you can specify the furthest value like in [`d20 furthest from 8`](#/d/d20_furthest_from_8) and apply the usual suffixes [`reroll`](#/d/d20_furthest_from_8_reroll), [`high`](#/d/d20_furthest_from_8_high) or [`low`](#/d/d20_furthest_from_8_low).
 
   [1]: #/d/((3d6,9)_keep_1_+_2)_*_2
