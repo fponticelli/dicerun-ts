@@ -1,30 +1,21 @@
 Arguments: 
-  /usr/local/share/nvm/versions/node/v19.7.0/bin/node /usr/share/yarn/bin/yarn.js add -D @types/nano-markdown
+  /usr/local/bin/node /Users/franco/.yarn/bin/yarn.js
 
 PATH: 
-  /usr/local/rvm/gems/ruby-3.1.3/bin:/usr/local/rvm/gems/ruby-3.1.3@global/bin:/usr/local/rvm/rubies/ruby-3.1.3/bin:/vscode/bin/linux-x64/079272e4a37ceecd22dcebc3566bb46c8580a13c-insider/bin/remote-cli:/home/codespace/.local/bin:/home/codespace/.dotnet:/home/codespace/nvm/current/bin:/home/codespace/.php/current/bin:/home/codespace/.python/current/bin:/home/codespace/java/current/bin:/home/codespace/.ruby/current/bin:/home/codespace/.local/bin:/usr/local/oryx:/usr/local/go/bin:/go/bin:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/local/rvm/gems/default/bin:/usr/local/rvm/gems/default@global/bin:/usr/local/rvm/rubies/default/bin:/usr/local/share/rbenv/bin:/opt/conda/bin:/usr/local/php/current/bin:/usr/local/python/current/bin:/usr/local/py-utils/bin:/usr/local/nvs:/usr/local/share/nvm/versions/node/v19.7.0/bin:/usr/local/hugo/bin:/usr/local/dotnet/current:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/codespace/.dotnet/tools:/usr/local/rvm/bin
+  /Users/franco/.amplify/bin:/Users/franco/.yarn/bin:/Users/franco/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/franco/.amplify/bin:/Users/franco/.yarn/bin:/Users/franco/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/franco/.cargo/bin:/Users/franco/flutter/bin:/usr/local/bin:/Users/franco/flutter/bin
 
 Yarn version: 
   1.22.19
 
 Node version: 
-  19.7.0
+  18.13.0
 
 Platform: 
-  linux x64
+  darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fnano-markdown: Not found
-      at params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66145:18)
-      at self.callback (/usr/share/yarn/lib/cli.js:140890:22)
-      at Request.emit (node:events:512:28)
-      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:141862:10)
-      at Request.emit (node:events:512:28)
-      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:141784:12)
-      at Object.onceWrapper (node:events:626:28)
-      at IncomingMessage.emit (node:events:524:35)
-      at endReadableNT (node:internal/streams/readable:1359:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+  Error: getaddrinfo ENOTFOUND registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:107:26)
 
 npm manifest: 
   {
@@ -39,16 +30,18 @@ npm manifest:
       "preview": "vite preview"
     },
     "dependencies": {
-      "@tempots/dom": "5.0.2",
+      "@tempots/dom": "7.1.2",
       "@tempots/ui": "0.1.0",
-      "dicerollerts": "^0.3.0",
+      "dicerollerts": "^0.6.2",
+      "marked": "^4.3.0",
       "nano-markdown": "^1.2.2",
       "partsing": "^0.7.3",
-      "showdown": "^2.1.0"
+      "react-ga4": "^2.1.0"
     },
     "devDependencies": {
       "@happy-dom/jest-environment": "^9.1.7",
       "@types/jest": "^29.5.0",
+      "@types/marked": "^4.0.8",
       "@types/node": "^18.15.11",
       "@types/showdown": "^2.0.0",
       "@typescript-eslint/eslint-plugin": "^5.43.0",
@@ -62,7 +55,8 @@ npm manifest:
       "stylus": "^0.59.0",
       "ts-jest": "^29.1.0",
       "typescript": "^5.0.3",
-      "vite": "^4.2.1"
+      "vite": "^4.2.1",
+      "vite-plugin-comlink": "^3.0.5"
     },
     "repository": {
       "type": "git",
@@ -943,7 +937,12 @@ Lockfile:
     dependencies:
       "@sinonjs/commons" "^2.0.0"
   
-  "@tempots/dom@5.0.2", "@tempots/dom@^5.0.2":
+  "@tempots/dom@7.1.2":
+    version "7.1.2"
+    resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-7.1.2.tgz#bc33ead6c80879eb3e3e2c5f23aa87cc7b0362b2"
+    integrity sha512-ZdaKRBDy21553zIAwxSLQGOO+7aKTHYjtyQNeM1GKgd8kKO7aicBJotyvI5QBYxVTitTW+quvEs7s3sP2dzs9A==
+  
+  "@tempots/dom@^5.0.2":
     version "5.0.2"
     resolved "https://registry.yarnpkg.com/@tempots/dom/-/dom-5.0.2.tgz#100096ce9e14e96d95f21b6744732a339778baf2"
     integrity sha512-/UDwiWHA2IMcnsNBkaQN0IFj8To6QZdGKHZIrij8fupSjd0Z2J8Ol/PA6mUpFaRVFfsCFuiYfJ7bXZBWkbLYfQ==
@@ -1039,6 +1038,11 @@ Lockfile:
     version "0.0.29"
     resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
     integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
+  
+  "@types/marked@^4.0.8":
+    version "4.0.8"
+    resolved "https://registry.yarnpkg.com/@types/marked/-/marked-4.0.8.tgz#b316887ab3499d0a8f4c70b7bd8508f92d477955"
+    integrity sha512-HVNzMT5QlWCOdeuBsgXP8EZzKUf0+AXzN+sLmjvaB3ZlLqO+e4u0uXrdw9ub69wBKFs+c6/pA4r9sy6cCDvImw==
   
   "@types/node@*", "@types/node@^18.15.11":
     version "18.15.11"
@@ -1514,11 +1518,6 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
     integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
   
-  commander@^9.0.0:
-    version "9.5.0"
-    resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
-    integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
-  
   concat-map@0.0.1:
     version "0.0.1"
     resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
@@ -1606,10 +1605,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
     integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
   
-  dicerollerts@^0.3.0:
-    version "0.3.0"
-    resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.3.0.tgz#c318649ba3525905f469886479197d9e35d2d31d"
-    integrity sha512-ET9EO4uLfmRY1U2bOi8jpW62ONbSGWR6FS7qrukGy9XfOqwTWfYDgGDZk+tIvRyrSTaZbxhlDpjD8EZ40yVAgw==
+  dicerollerts@^0.6.1:
+    version "0.6.1"
+    resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.6.1.tgz#7c86350c9b8851c8d2a24264d43155dfa17a5f10"
+    integrity sha512-z6wvlMMPYSXI6ZLtHSR00yPt9TeX4dLh5+Gh1K5jAXN8OCSPLEsjb1HMOkIoAbmWCfXqVNAfFb7fG+CclaUA2A==
     dependencies:
       partsing "^0.7.3"
   
@@ -2977,6 +2976,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
     integrity sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
   
+  json5@2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.1.tgz#655d50ed1e6f95ad1a3caababd2b0efda10b395c"
+    integrity sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==
+  
   json5@^1.0.2:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.2.tgz#63d98d60f21b313b77c4d6da18bfa69d80e1d593"
@@ -3050,6 +3054,13 @@ Lockfile:
     dependencies:
       yallist "^4.0.0"
   
+  magic-string@0.26.7:
+    version "0.26.7"
+    resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.26.7.tgz#caf7daf61b34e9982f8228c4527474dac8981d6f"
+    integrity sha512-hX9XH3ziStPoPhJxLq1syWuZMxbDvGNbVchfrdCtanC7D13888bMFow61x8axrx+GfHLtVeAx2kxL7tTGRl+Ow==
+    dependencies:
+      sourcemap-codec "^1.4.8"
+  
   make-dir@^3.0.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-3.1.0.tgz#415e967046b3a7f1d185277d84aa58203726a13f"
@@ -3068,6 +3079,11 @@ Lockfile:
     integrity sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==
     dependencies:
       tmpl "1.0.5"
+  
+  marked@^4.3.0:
+    version "4.3.0"
+    resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
+    integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
   
   merge-stream@^2.0.0:
     version "2.0.0"
@@ -3359,6 +3375,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
     integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
   
+  react-ga4@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/react-ga4/-/react-ga4-2.1.0.tgz#56601f59d95c08466ebd6edfbf8dede55c4678f9"
+    integrity sha512-ZKS7PGNFqqMd3PJ6+C2Jtz/o1iU9ggiy8Y8nUeksgVuvNISbmrQtJiZNvC/TjDsqD0QlU5Wkgs7i+w9+OjHhhQ==
+  
   react-is@^18.0.0:
     version "18.2.0"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
@@ -3488,13 +3509,6 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
     integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
   
-  showdown@^2.1.0:
-    version "2.1.0"
-    resolved "https://registry.yarnpkg.com/showdown/-/showdown-2.1.0.tgz#1251f5ed8f773f0c0c7bfc8e6fd23581f9e545c5"
-    integrity sha512-/6NVYu4U819R2pUIk79n67SYgJHWCce0a5xTP979WbNp0FL9MN1I1QK662IDU1b6JzKTvmhgI7T7JYIxBi3kMQ==
-    dependencies:
-      commander "^9.0.0"
-  
   side-channel@^1.0.4:
     version "1.0.4"
     resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"
@@ -3546,6 +3560,11 @@ Lockfile:
     version "0.7.4"
     resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.4.tgz#a9bbe705c9d8846f4e08ff6765acf0f1b0898656"
     integrity sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==
+  
+  sourcemap-codec@^1.4.8:
+    version "1.4.8"
+    resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
+    integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
   
   sprintf-js@~1.0.2:
     version "1.0.3"
@@ -3808,6 +3827,14 @@ Lockfile:
       "@jridgewell/trace-mapping" "^0.3.12"
       "@types/istanbul-lib-coverage" "^2.0.1"
       convert-source-map "^1.6.0"
+  
+  vite-plugin-comlink@^3.0.5:
+    version "3.0.5"
+    resolved "https://registry.yarnpkg.com/vite-plugin-comlink/-/vite-plugin-comlink-3.0.5.tgz#bd97207191fd9c880ae5677a1e99716d007b221a"
+    integrity sha512-my8BE9GFJEaLc7l3e2SfRUL8JJsN9On8PiW7q4Eyq3g6DHUsNqo5WlS7Butuzc8ngrs24Tf1RC8Xfdda+E5T9w==
+    dependencies:
+      json5 "2.2.1"
+      magic-string "0.26.7"
   
   vite@^4.2.1:
     version "4.2.1"

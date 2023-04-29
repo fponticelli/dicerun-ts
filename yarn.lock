@@ -1529,10 +1529,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-dicerollerts@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.5.0.tgz#05f569648184e4971e41815ffaa758020ebe2c34"
-  integrity sha512-CuVgw6uCtVP+oIy85puew4mCFhVnDHjZFqloPxy7PQ+0jIidKA/4HaGleeYrxHmTapOIdrLpvkNtNceJzZhhdQ==
+dicerollerts@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/dicerollerts/-/dicerollerts-0.6.2.tgz#20770886b49a24588601713ed64868c06d84f032"
+  integrity sha512-y7v7RKUPnBsB0BucBMf+NJ6WmbgeBJWoqa7+itZiZJbB/IUKTlzeHFg66C+rho2xS3ZfQZzuje1YzxLEdf4/yw==
   dependencies:
     partsing "^0.7.3"
 

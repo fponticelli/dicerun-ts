@@ -1,5 +1,5 @@
 import { type JSX, type Signal, OneOfUnionType, OneOfLiteral, OneOf, ClassName, For, conjuctions, type PositionProps } from '@tempots/dom'
-import { type DiceBinOp, type DiceReducer, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Range, type Times, type Rerolled, type Exploded, type Normal, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo, type OneResult } from 'dicerollerts'
+import { type DiceBinOp, type DiceReducer, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Range, type Times, type Rerolled, type Exploded, type Normal, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo, type OneResult, type Emphasis } from 'dicerollerts'
 import { easeOutCubic, lerpi } from './RollView'
 
 export interface RollDetailsViewProps {
@@ -170,6 +170,23 @@ export function ExplodeView ({ explode }: { explode: Signal<Explode> }): JSX.DOM
   )
 }
 
+export function EmphasisView ({ emphasis }: { emphasis: Signal<Emphasis> }): JSX.DOMNode {
+  return (
+    <div class="emphasis">
+      <div class="op">
+        {emphasis.at('furthestFrom').map(v => {
+          switch (v) {
+            case 'average': return 'emphasis'
+            default: return `furthest from ${String(v)}`
+          }
+        })}
+        {' '}
+        {emphasis.at('tieBreaker')}
+      </div>
+    </div>
+  )
+}
+
 export function RerollView ({ reroll }: { reroll: Signal<Reroll> }): JSX.DOMNode {
   return (
     <div class="reroll">
@@ -186,6 +203,7 @@ export function DiceFunctorView ({ functor }: { functor: Signal<DiceFunctor> }):
       match={functor}
       explode={((v: Signal<Explode>) => <ExplodeView explode={v} />)}
       reroll={((v: Signal<Reroll>) => <RerollView reroll={v} />)}
+      emphasis={((v: Signal<Emphasis>) => <EmphasisView emphasis={v} />)}
     />
   )
 }
