@@ -48,7 +48,7 @@ export function RollView ({ dispatch, state }: RollViewProps): JSX.DOMNode {
             {result}
           </a>
           <When is={displayTooltip}>
-            <Tooltip>click here to roll again</Tooltip>
+            { () => <Tooltip>click here to roll again</Tooltip> }
           </When>
         </div>
         <SeedControls useSeed={state.at('useSeed')} seed={state.at('seed')} updateSeed={updateSeed} toggleSeed={toggleSeed} />
@@ -90,10 +90,10 @@ export function SeedControls ({ useSeed, seed, updateSeed, toggleSeed }: SeedCon
         <span>use seed</span>
       </label>
       <When is={useSeed}>
-        <Editable
+        { () => <Editable
           value={seed.map(String)}
           onChange={v => { updateSeed(Number(v)) }}
-        />
+        /> }
       </When>
     </div>
   )

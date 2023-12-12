@@ -17,7 +17,7 @@ function formatValue (bucketSize: number, value: number): string {
     return `${value}`
   } else {
     const m = (value - 1) * bucketSize
-    return `${m}-${m + bucketSize - 1}`
+    return `${m + 1}-${m + bucketSize}`
   }
 }
 
@@ -32,12 +32,13 @@ export function ChartView ({
 }): JSX.DOMNode {
   const bucketSize = probabilities.map(p => {
     const { minValue, maxValue } = p.stats()
-    const range = maxValue - minValue
+    const range = maxValue - minValue + 1
     return findBucketSize(range)
   })
   return (
-    <For of={probabilities.map(p => {
-      return p.stats().getSamples()
+    <For of={probabilities.combine(bucketSize, (p, bs) => {
+      if (bs === 1) return p.stats().getSamples()
+      return p.bucket(bs).stats().getSamples()
     })}>
       {(s: Signal<Sample>) => {
         const selected = Prop.of(false)
@@ -112,10 +113,9 @@ export function LabelsView (): JSX.DOMNode {
   )
 }
 
+const threshold = 100
 function findBucketSize (range: number): number {
-  const threshold = 100
-  if (range <= threshold) return 1
-  const sizes = [2, 5, 10, 20, 25, 50, 100]
+  const sizes = [1, 2, 5, 10, 20, 25, 50, 100]
   const multiplier = 100
   let curMultiplier = 1
   while (true) {

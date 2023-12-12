@@ -22,10 +22,9 @@ export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.
             displayTooltip.set(false)
             dispatch(Action.evaluateExpression(v))
           }}
-          autofocus
           />
         <When is={displayTooltip}>
-          <Tooltip>type a dice expression here</Tooltip>
+          { () => <Tooltip>type a dice expression here</Tooltip> }
         </When>
       </div>
       <OneOfUnionType
