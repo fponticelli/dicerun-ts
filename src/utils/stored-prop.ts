@@ -22,7 +22,13 @@ export function storedProp<T> (
   deserialize: (value: string) => T = JSON.parse
 ): Prop<T> {
   const prop = Prop.of(store.has() ? deserialize(store.get()) : makeDefault())
-  prop.subscribe(value => { store.set(serialize(value)) })
+  prop.subscribe(value => {
+    const serialized = serialize(value)
+    // only store if smaller than ~500kb
+    if (serialized.length < 500000) {
+      store.set(serialized)
+    }
+  })
   return prop
 }
 
