@@ -12,7 +12,7 @@
   "dependencies": {
     "@tempots/dom": "9.0.2",
     "@tempots/ui": "0.1.0",
-    "dicerollerts": "file:../dicerollerts",
+    "dicerollerts": "^0.8.0",
     "marked": "^18.0.0",
     "react-ga4": "^3.0.1"
   },
