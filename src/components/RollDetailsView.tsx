@@ -1,5 +1,5 @@
 import { type JSX, type Signal, OneOfUnionType, OneOfLiteral, OneOf, ClassName, For, conjuctions, type PositionProps } from '@tempots/dom'
-import { type DiceBinOp, type DiceReducer, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Range, type Times, type Rerolled, type Exploded, type Normal, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo, type OneResult, type Emphasis } from 'dicerollerts'
+import { type DiceBinOp, type DiceReducer, type SimpleReducer, type CountReducer, type DiceResultMapped, type DieResult, type DieResultFilter, type RollResult, type LiteralResult, type DiceReduceResult, type BinaryOpResult, type UnaryOpResult, type DiceReduceableResult, type DiceExpressionsResult, type DiceMapeableResult, type DiceFilterableResult, type DiceFilter, type Drop, type Keep, type DiceUnOp, type DiceFunctor, type Explode, type Reroll, type Compound, type Range, type Times, type Rerolled, type Exploded, type Normal, type Compounded, type Between, type Exact, type Composite, type ValueOrLess, type ValueOrMore, type Always, type UpTo, type OneResult, type Emphasis, type CustomDieResult } from 'dicerollerts'
 import { easeOutCubic, lerpi } from './RollView'
 
 export interface RollDetailsViewProps {
@@ -10,7 +10,13 @@ export function RollDetailsView ({ result }: RollDetailsViewProps): JSX.DOMNode 
   return (
     <OneOfUnionType
       match={result}
-      one-result={((r: Signal<OneResult>) => <DieResultView die={r.at('die')} />)}
+      one-result={((r: Signal<OneResult>) => {
+        return <OneOf
+          match={r.at('die').map(d => d.type === 'custom-die-result' ? { custom: d as CustomDieResult } : { standard: d as DieResult })}
+          standard={(d: Signal<DieResult>) => <DieResultView die={d} />}
+          custom={(d: Signal<CustomDieResult>) => <CustomDieResultView die={d} />}
+        />
+      })}
       literal-result={((r: Signal<LiteralResult>) => <LiteralResultView result={r} />)}
       binary-op-result={((r: Signal<BinaryOpResult>) => <BinaryOpResultView op={r} />)}
       dice-result-mapped={((r: Signal<DiceResultMapped>) => <DiceResultMappedView dice={r} />)}
@@ -197,12 +203,23 @@ export function RerollView ({ reroll }: { reroll: Signal<Reroll> }): JSX.DOMNode
   )
 }
 
+export function CompoundView ({ compound }: { compound: Signal<Compound> }): JSX.DOMNode {
+  return (
+    <div class="compound">
+      <div class="op">compound</div>
+      <TimesView times={compound.at('times')} />
+      <RangeView range={compound.at('range')} />
+    </div>
+  )
+}
+
 export function DiceFunctorView ({ functor }: { functor: Signal<DiceFunctor> }): JSX.DOMNode {
   return (
     <OneOfUnionType
       match={functor}
       explode={((v: Signal<Explode>) => <ExplodeView explode={v} />)}
       reroll={((v: Signal<Reroll>) => <RerollView reroll={v} />)}
+      compound={((v: Signal<Compound>) => <CompoundView compound={v} />)}
       emphasis={((v: Signal<Emphasis>) => <EmphasisView emphasis={v} />)}
     />
   )
@@ -308,17 +325,52 @@ export function DiceResultMappedView ({ dice }: { dice: Signal<DiceResultMapped>
         <DieResultView die={v.at('roll')} />
       </div>
     )}
+    compounded={(v: Signal<Compounded>) => (
+      <div class="compounded">
+        <For of={v.at('rolls')}>
+          {(r: Signal<DieResult>) => (
+            <div class="keep">
+              <DieResultView die={r} />
+            </div>)}
+        </For>
+        <div class="compound-total">= {v.at('total')}</div>
+      </div>
+    )}
   />
 }
 
+function rangeToString (r: Range): string {
+  switch (r.type) {
+    case 'exact': return `= ${r.value}`
+    case 'value-or-more': return `>= ${r.value}`
+    case 'value-or-less': return `<= ${r.value}`
+    case 'between': return `${r.minInclusive}..${r.maxInclusive}`
+    case 'composite': return r.ranges.map(rangeToString).join(', ')
+  }
+}
+
+export function CountThresholdView ({ range }: { range: Signal<Range> }): JSX.DOMNode {
+  return <span>{range.map(rangeToString)}</span>
+}
+
 export function ReducerView ({ reducer }: { reducer: Signal<DiceReducer> }): JSX.DOMNode {
-  return <OneOfLiteral
-    match={reducer}
-    sum={<></>}
-    min={<div>take lowest</div>}
-    max={<div>take highest</div>}
-    average={<div>average</div>}
-    median={<div>median</div>}
+  return <OneOf
+    match={reducer.map(r => typeof r === 'object' ? { count: r as CountReducer } : { simple: r as SimpleReducer })}
+    simple={(r: Signal<SimpleReducer>) => (
+      <OneOfLiteral
+        match={r}
+        sum={<></>}
+        min={<div>take lowest</div>}
+        max={<div>take highest</div>}
+        average={<div>average</div>}
+        median={<div>median</div>}
+      />
+    )}
+    count={(r: Signal<CountReducer>) => (
+      <div class="count-reducer">
+        count <CountThresholdView range={r.at('threshold')} />
+      </div>
+    )}
   />
 }
 
@@ -369,6 +421,18 @@ export function DieResultView ({ die }: { die: Signal<DieResult> }): JSX.DOMNode
       }
     }
   />
+}
+
+export function CustomDieResultView ({ die }: { die: Signal<CustomDieResult> }): JSX.DOMNode {
+  return <DetailsView result={die.at('result')}>
+    <div class="die">
+      <div class="d">d</div>
+      <div class="X">{die.at('faces').map(f => {
+        if (f.length === 3 && f[0] === -1 && f[1] === 0 && f[2] === 1) return 'F'
+        return `{${f.join(',')}}`
+      })}</div>
+    </div>
+  </DetailsView>
 }
 
 export function OpView ({ op }: { op: Signal<DiceBinOp> }): JSX.DOMNode {
