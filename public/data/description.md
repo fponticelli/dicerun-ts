@@ -1,8 +1,10 @@
 # Basic Expressions
 
-Type a dice expression in the box above to roll.
+Type a dice expression in the box above to roll. Click the result to re-roll.
 
 [`d`](#/d/d) rolls one six-sided die. You can also write [`d6`](#/d/d6) or [`1d6`](#/d/1d6). Roll multiple dice with [`3d6`](#/d/3d6), use different sizes with [`2d10`](#/d/2d10), or roll a percent die with [`d100`](#/d/d100) (or [`d%`](#/d/d%)).
+
+Negative values and negated dice are supported: [`-3`](#/d/-3), [`-d6`](#/d/-d6), [`-(d6,d4)`](#/d/-(d6,d4)).
 
 # Custom Dice and Fate Dice
 
@@ -52,21 +54,44 @@ A dice set like [`5d6`](#/d/5d6) expands into individual dice [`(d6,d6,d6,d6,d6)
 
 Note: [`(d6,2d8)`](#/d/(d6,2d8)) is an expression set, not a dice set, because `2d8` is itself an expression. Expression sets support reducing and filtering but not dice-specific modifiers.
 
+# Trigger Conditions
+
+Explode, reroll, and compound all use trigger conditions to decide when to activate. These conditions can be:
+
+* **Exact value**: `on 6` -- triggers only on 6
+* **At or above**: `on 5 or more` -- triggers on 5, 6, 7, ...
+* **At or below**: `on 2 or less` -- triggers on 1, 2
+* **Between**: `on 3 5` -- triggers on values from 3 to 5
+
+Conditions can also be limited by number of times:
+
+* `once` -- activate at most once per die
+* `twice` -- at most twice
+* `thrice` -- at most three times
+* `N times` -- at most N times (e.g., [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more))
+* `always` (default) -- no limit
+
 # Explode
 
-An exploding die is rolled again whenever it hits a trigger value. All rolls are summed as separate dice. [`3d6 explode always on 5 or more`](#/d/3d6_explode_always_on_5_or_more) or shorthand [`3d6e5`](#/d/3d6e5).
+An exploding die is rolled again whenever it hits a trigger. All rolls are kept as separate dice and summed. [`3d6 explode on 5 or more`](#/d/3d6_explode_on_5_or_more) or shorthand [`3d6e5`](#/d/3d6e5).
 
-Limit explosions with [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more), or [`N times`](#/d/3d6_explode_10_times_on_5_or_more). The trigger can be `or more`, `or less`, or an exact value.
+Example: roll a 5 on a d6 with `explode on 5 or more` -- roll again, get 3. Result: two dice showing 5 and 3 (total 8).
+
+Limit with [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more), or [`N times`](#/d/3d6_explode_10_times_on_5_or_more).
 
 # Reroll
 
-Same syntax as explode, but keeps only the last roll instead of summing all: [`3d6 reroll always on 2 or less`](#/d/3d6_reroll_always_on_2_or_less) or shorthand [`3d6r2`](#/d/3d6r2).
+Same syntax as explode, but only the last roll counts: [`3d6 reroll on 2 or less`](#/d/3d6_reroll_on_2_or_less) or shorthand [`3d6r2`](#/d/3d6r2).
+
+Example: roll a 1 on a d6 with `reroll on 2 or less` -- roll again, get 4. Result: 4 (the 1 is discarded).
 
 # Compound
 
-Like explode, but the extra rolls are added to the *original* die rather than producing new dice. A die that rolled 6 and then 4 shows as a single die worth 10.
+Like explode, but the extra rolls are added to the *original* die rather than producing new dice.
 
 [`d6 compound on 6`](#/d/d6_compound_on_6) or shorthand [`3d6ce6`](#/d/3d6ce6). Supports the same time limits: [`d6 compound once on 6`](#/d/d6_compound_once_on_6), [`d6 compound twice on 6`](#/d/d6_compound_twice_on_6), etc.
+
+Example: roll a 6 on a d6 with `compound on 6` -- roll again, get 4. Result: one die showing 10.
 
 # Emphasis
 
@@ -82,13 +107,27 @@ You can specify a custom center point instead of the average: [`d20 furthest fro
 
 Count how many dice meet a threshold, for systems like World of Darkness or Shadowrun.
 
-* [`8d10 count >= 6`](#/d/8d10_count_>=_6) -- count successes rolling 6 or higher
+* [`8d10 count >= 6`](#/d/8d10_count_%3E=_6) -- count successes rolling 6 or higher
 * [`3d6 count = 5`](#/d/3d6_count_=_5) -- count exact matches
-* [`4d6 count <= 2`](#/d/4d6_count_<=_2) -- count values at or below 2
-* [`4d6 count > 4`](#/d/4d6_count_>_4) and [`4d6 count < 3`](#/d/4d6_count_<_3) -- strict comparisons
+* [`4d6 count <= 2`](#/d/4d6_count_%3C=_2) -- count values at or below 2
+* [`4d6 count > 4`](#/d/4d6_count_%3E_4) and [`4d6 count < 3`](#/d/4d6_count_%3C_3) -- strict comparisons
 
 Shorthand: [`8d10c6`](#/d/8d10c6) for `count >= 6`.
 
-Dice pools compose with other modifiers: [`8d10 explode on 10 count >= 6`](#/d/8d10_explode_on_10_count_>=_6).
+Dice pools compose with other modifiers: [`8d10 explode on 10 count >= 6`](#/d/8d10_explode_on_10_count_%3E=_6).
+
+# Seeded Rolls
+
+Enable the **use seed** checkbox below the result to get reproducible rolls. With the same seed and expression, you always get the same result. Change the seed number to get a different sequence. Useful for sharing specific rolls or testing.
+
+# Probability Charts
+
+Below the roll result, three bar charts show the probability distribution of your expression:
+
+* **At least** -- chance of rolling this value *or higher*
+* **Probabilities** -- chance of rolling *exactly* this value
+* **At most** -- chance of rolling this value *or lower*
+
+Hover over any bar to see the exact percentage. Probabilities are computed in the background and refine over time. For large ranges, values are grouped into buckets.
 
   [1]: #/d/((3d6,9)_keep_1_+_2)_*_2
