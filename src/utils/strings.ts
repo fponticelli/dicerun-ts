@@ -1,5 +1,5 @@
 export function prettify (s: string): string {
-  return s.replaceAll('_', ' ')
+  return decodeURIComponent(s).replaceAll('_', ' ')
 }
 
 export function trimCharsLeft (s: string, chars: string): string {
