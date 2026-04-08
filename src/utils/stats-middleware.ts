@@ -7,9 +7,9 @@ import ReactGA from 'react-ga4'
 const worker = new Worker(new URL('../workers/dice-worker.ts', import.meta.url), { type: 'module' })
 
 function updateUrl (source: string): void {
-  const hash = `/d/${source.replaceAll(' ', '_')}`
+  const hash = `#/d/${source.replaceAll(' ', '_')}`
   if (location.hash === hash) return
-  location.hash = hash
+  history.replaceState(null, '', hash)
   updateGoogleAnalytics(hash)
 }
 

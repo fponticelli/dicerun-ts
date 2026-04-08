@@ -1,29 +1,30 @@
-import { type DiceExpression, DiceParser, RR, Roller } from 'dicerollerts'
+import { type DiceExpression, DiceParser, DiceStats, Roller } from 'dicerollerts'
 import { ProbabilitiesResult } from '../utils/probabilities-result'
 
-const RUNTIME = 100
-const MAXRUNS = 10000000
+const CHUNK_SIZE = 10000
+const MAX_TRIALS = 10000000
 
 self.onmessage = (e: MessageEvent): void => {
   const { type, data } = e.data
   switch (type) {
     case 'init':
-    { initData(data); return }
+      initData(data)
+      return
     case 'evaluate-expression':
-    { evaluateExpression(data.expression) }
+      evaluateExpression(data.expression)
   }
 }
 
-const cache = new Map<string, DiceWorkerData>()
-export const initData = (data: Record<string, string>): void => {
+const cache = new Map<string, ProbabilitiesResult>()
+
+const initData = (data: Record<string, string>): void => {
   for (const f of Object.keys(data)) {
     try {
-      const dwd = DiceWorkerData.create(f)
+      DiceParser.parseOrNull(f)
       const res = data[f]
-      dwd.results = ProbabilitiesResult.fromObject(JSON.parse(res))
-      cache.set(f, dwd)
-    } catch (e: any) {
-      // just ignore things that stopped to parse correctly
+      cache.set(f, ProbabilitiesResult.fromObject(JSON.parse(res)))
+    } catch {
+      // ignore things that stopped parsing correctly
     }
   }
   postMessage({ type: 'init-done', data: {} })
@@ -31,59 +32,93 @@ export const initData = (data: Record<string, string>): void => {
 
 let cancel = (): void => {}
 
-export const evaluateExpression = (expr: string): void => {
+const evaluateExpression = (expr: string): void => {
   cancel()
-  postMessage({ type: 'probabilities-start', data: { expression: expr } })
-  let worker = cache.get(expr)
-  if (worker == null) {
-    worker = DiceWorkerData.create(expr)
-    cache.set(worker.exprString, worker)
-  }
-  postMessage({ type: 'probabilities-progress', data: { expression: expr, count: worker.results.count, max: MAXRUNS } })
-  if (worker.results.count >= MAXRUNS) {
-    postMessage({ type: 'probabilities-result', data: { data: worker.results.toObject(), expression: expr } })
-  } else {
-    run(expr, worker)
-  }
-}
+  postMessage({
+    type: 'probabilities-start',
+    data: { expression: expr },
+  })
 
-function run (expr: string, worker: DiceWorkerData): void {
-  const now = performance.now()
-  const endOn = now + RUNTIME
-  postMessage({ type: 'run', data: { now, endOn } })
-  while (true) {
-    worker.roll()
-    if (worker.results.count === MAXRUNS) break
-    if (performance.now() >= endOn) break
-  }
-  postMessage({ type: 'probabilities-result', data: { data: worker.results.toObject(), expression: expr } })
-  if (worker.results.count < MAXRUNS) {
-    // run(expr, worker)
-    const cancelId = setTimeout((): void => { run(expr, worker) }, 0)
-    cancel = (): void => { clearTimeout(cancelId) }
-  }
-}
-
-class DiceWorkerData {
-  public results: ProbabilitiesResult
-  public exprString: string
-  private readonly expr: DiceExpression
-  private readonly roller: Roller
-  static create (exprString: string): DiceWorkerData {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return new DiceWorkerData(exprString, DiceParser.parseOrNull(exprString)!)
-  }
-
-  constructor (exprString: string, parsed: DiceExpression) {
-    this.exprString = exprString
-    this.expr = parsed
-    this.roller = new Roller(function (sides) {
-      return 1 + Math.floor(Math.random() * sides)
+  const cached = cache.get(expr)
+  if (cached && cached.count >= MAX_TRIALS) {
+    postMessage({
+      type: 'probabilities-result',
+      data: { data: cached.toObject(), expression: expr },
     })
-    this.results = new ProbabilitiesResult()
+    return
   }
 
-  public roll (): void {
-    this.results.add(RR.getResult(this.roller.roll(this.expr)))
+  // Try exact distribution first
+  const parsed = DiceParser.parseOrNull(expr)
+  if (!parsed) return
+
+  try {
+    const dist = DiceStats.distribution(parsed)
+    const pr = distributionToProbabilitiesResult(dist, MAX_TRIALS)
+    cache.set(expr, pr)
+    postMessage({
+      type: 'probabilities-result',
+      data: { data: pr.toObject(), expression: expr },
+    })
+    return
+  } catch {
+    // exact not supported, fall through to Monte Carlo
   }
+
+  // Monte Carlo with chunked progress
+  runMonteCarlo(expr, parsed, cached)
+}
+
+function runMonteCarlo(
+  expr: string,
+  parsed: DiceExpression,
+  existing: ProbabilitiesResult | undefined,
+): void {
+  const pr = existing ?? new ProbabilitiesResult()
+  const remaining = MAX_TRIALS - pr.count
+  if (remaining <= 0) return
+
+  const roller = new Roller((max) => Math.floor(Math.random() * max) + 1)
+  let done = 0
+
+  const runChunk = (): void => {
+    const chunkEnd = Math.min(done + CHUNK_SIZE, remaining)
+    while (done < chunkEnd) {
+      const result = roller.roll(parsed)
+      pr.add(resultValue(result))
+      done++
+    }
+    cache.set(expr, pr)
+    postMessage({
+      type: 'probabilities-result',
+      data: { data: pr.toObject(), expression: expr },
+    })
+    if (done < remaining) {
+      const cancelId = setTimeout(runChunk, 0)
+      cancel = () => clearTimeout(cancelId)
+    }
+  }
+
+  runChunk()
+}
+
+function resultValue(result: import('dicerollerts').RollResult): number {
+  if (result.type === 'one-result') {
+    return result.die.result
+  }
+  return (result as { result: number }).result
+}
+
+function distributionToProbabilitiesResult(
+  dist: Map<number, number>,
+  sampleSize: number,
+): ProbabilitiesResult {
+  const pr = new ProbabilitiesResult()
+  for (const [value, prob] of dist) {
+    const count = Math.round(prob * sampleSize)
+    if (count > 0) {
+      pr.addQt(value, count)
+    }
+  }
+  return pr
 }
