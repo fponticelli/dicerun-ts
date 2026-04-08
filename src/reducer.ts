@@ -42,12 +42,12 @@ export function reduce (state: State, action: Action): State {
   switch (action.type) {
     case 'evaluate-expression':
     {
-      const result = DiceParser.parse(action.expr)
-      if (result.isFailure()) {
+      const result = DiceParser.parseWithErrors(action.expr)
+      if (!result.success) {
         return {
           ...state,
           roll: null,
-          expression: Expression.parseError(action.expr, result.failures),
+          expression: Expression.parseError(action.expr, result.errors),
           probabilities: null
         }
       } else {

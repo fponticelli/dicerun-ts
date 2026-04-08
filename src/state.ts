@@ -1,5 +1,5 @@
 import { type ValidationMessage, type DiceExpression, type RollResult } from 'dicerollerts'
-import { type DecodeError } from 'partsing/error'
+import type { ParseError as DiceParseError } from 'dicerollerts'
 import { type ProbabilitiesResult } from './utils/probabilities-result'
 
 export interface State {
@@ -32,7 +32,7 @@ export interface ParsedInvalid {
 export interface ParseError {
   type: 'parse-error'
   source: string
-  err: DecodeError[]
+  err: DiceParseError[]
 }
 
 export type Expression =
@@ -56,7 +56,7 @@ export const Expression = {
   ): ParsedInvalid {
     return { type: 'parsed-invalid', source, errors, expr }
   },
-  parseError (source: string, err: DecodeError[]): ParseError {
+  parseError (source: string, err: DiceParseError[]): ParseError {
     return { type: 'parse-error', source, err }
   }
 }

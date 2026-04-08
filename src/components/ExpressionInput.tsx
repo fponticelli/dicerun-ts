@@ -2,8 +2,8 @@ import { type JSX, type Signal, OneOfUnionType, For, conjuctions, When, Prop } f
 import { type Expression, type ParseError, type ParsedInvalid } from '../state'
 import { Action } from '../action'
 import { Editable } from './Editable'
-import { type DecodeError } from 'partsing/error'
 import { type ValidationMessage } from 'dicerollerts'
+import type { ParseError as DiceParseError } from 'dicerollerts'
 import { Tooltip } from './Tooltip'
 
 export interface ExpressionInputProps {
@@ -39,19 +39,22 @@ export function ExpressionInput ({ dispatch, expr }: ExpressionInputProps): JSX.
 }
 
 export interface ParseErrorProps {
-  errors: Signal<DecodeError[]>
+  errors: Signal<DiceParseError[]>
 }
 
 export function ParseErrorView ({ errors }: ParseErrorProps): JSX.DOMNode {
   return (
     <div class="error">
-      <span class="label">Parse error with</span>
-      <br />
-      <span class="expected">
-        <For of={errors.map(v => Array.from(new Set(v)))} separator={conjuctions(', ')}>
-          {(err: Signal<DecodeError>) => <span>{err.map(e => e.toString())}</span>}
-        </For>
-      </span>
+      <For of={errors} separator={() => <br />}>
+        {(err: Signal<DiceParseError>) => (
+          <div>
+            <span class="label">{err.at('message')}</span>
+            <When is={err.at('suggestion').map(s => s != null)}>
+              {() => <span class="suggestion"> {err.at('suggestion')}</span>}
+            </When>
+          </div>
+        )}
+      </For>
     </div>
   )
 }
@@ -78,6 +81,7 @@ export function ValidationErrors ({ errors }: ValidationErrorsProps): JSX.DOMNod
                 too-many-drops={() => <span>Too many drops</span>}
                 too-many-keeps={() => <span>Too many keeps</span>}
                 insufficient-sides={() => <span>Insufficient sides</span>}
+                empty-faces={() => <span>Custom die must have at least one face</span>}
               />
             }
           </For>
