@@ -22,11 +22,11 @@ Division: `/`, `÷`, or `:`. Multiplication: `*`, `×`, `⋅`, or `x`.
 
 Group multiple expressions in a set: [`(2d6,3d8,1d10+2)`](#/d/(2d6,3d8,1d10+2)). By default, results are summed. Other reducers:
 
-* [`sum`](#/d/(2d6,3d8,1d10+2)_sum) (default)
-* [`min`](#/d/(2d6,3d8,1d10+2)_min) or `take least` -- lowest value
-* [`max`](#/d/(2d6,3d8,1d10+2)_max) or `take best` -- highest value
-* [`median`](#/d/(2d6,3d8,1d10+2)_median) -- middle value
-* [`average`](#/d/(2d6,3d8,1d10+2)_average) -- mean, rounded
+* [`(2d6,3d8,1d10+2) sum`](#/d/(2d6,3d8,1d10+2)_sum) (default)
+* [`(2d6,3d8,1d10+2) min`](#/d/(2d6,3d8,1d10+2)_min) or `take least` -- lowest value
+* [`(2d6,3d8,1d10+2) max`](#/d/(2d6,3d8,1d10+2)_max) or `take best` -- highest value
+* [`(2d6,3d8,1d10+2) median`](#/d/(2d6,3d8,1d10+2)_median) -- middle value
+* [`(2d6,3d8,1d10+2) average`](#/d/(2d6,3d8,1d10+2)_average) -- mean, rounded
 
 Sets also control operator precedence: [`(3d6+2) x 2`](#/d/(3d6+2)_x_2). They compose with other features: [`((3d6,9) keep 1 + 2) * 2`][1].
 
@@ -58,32 +58,30 @@ Note: [`(d6,2d8)`](#/d/(d6,2d8)) is an expression set, not a dice set, because `
 
 Explode, reroll, and compound all use trigger conditions to decide when to activate. These conditions can be:
 
-* **Exact value**: `on 6` -- triggers only on 6
-* **At or above**: `on 5 or more` -- triggers on 5, 6, 7, ...
-* **At or below**: `on 2 or less` -- triggers on 1, 2
-* **Between**: `on 3 5` -- triggers on values from 3 to 5
+* **Exact value**: [`d6 explode once on 6`](#/d/d6_explode_once_on_6) -- triggers only on 6
+* **At or above**: [`d6 explode once on 5 or more`](#/d/d6_explode_once_on_5_or_more) -- triggers on 5 or 6
+* **At or below**: [`d6 reroll once on 2 or less`](#/d/d6_reroll_once_on_2_or_less) -- triggers on 1 or 2
+* **Between**: [`d20 explode once on 18 20`](#/d/d20_explode_once_on_18_20) -- triggers on 18, 19, or 20
 
 Conditions can also be limited by number of times:
 
-* `once` -- activate at most once per die
-* `twice` -- at most twice
-* `thrice` -- at most three times
-* `N times` -- at most N times (e.g., [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more))
-* `always` (default) -- no limit
+* [`3d6 explode once on 6`](#/d/3d6_explode_once_on_6) -- at most once per die
+* [`3d6 explode twice on 6`](#/d/3d6_explode_twice_on_6) -- at most twice
+* [`3d6 explode thrice on 6`](#/d/3d6_explode_thrice_on_6) -- at most three times
+* [`3d6 explode 10 times on 5 or more`](#/d/3d6_explode_10_times_on_5_or_more) -- at most N times
+* [`3d6 explode on 6`](#/d/3d6_explode_on_6) -- no limit (default)
 
 # Explode
 
 An exploding die is rolled again whenever it hits a trigger. All rolls are kept as separate dice and summed. [`3d6 explode on 5 or more`](#/d/3d6_explode_on_5_or_more) or shorthand [`3d6e5`](#/d/3d6e5).
 
-Example: roll a 5 on a d6 with `explode on 5 or more` -- roll again, get 3. Result: two dice showing 5 and 3 (total 8).
-
-Limit with [`once`](#/d/3d6_explode_once_on_5_or_more), [`twice`](#/d/3d6_explode_twice_on_5_or_more), [`thrice`](#/d/3d6_explode_thrice_on_5_or_more), or [`N times`](#/d/3d6_explode_10_times_on_5_or_more).
+Example: [`d6 explode once on 5 or more`](#/d/d6_explode_once_on_5_or_more) -- roll a 5, roll again, get 3. Result: two dice showing 5 and 3 (total 8).
 
 # Reroll
 
 Same syntax as explode, but only the last roll counts: [`3d6 reroll on 2 or less`](#/d/3d6_reroll_on_2_or_less) or shorthand [`3d6r2`](#/d/3d6r2).
 
-Example: roll a 1 on a d6 with `reroll on 2 or less` -- roll again, get 4. Result: 4 (the 1 is discarded).
+Example: [`d6 reroll once on 1`](#/d/d6_reroll_once_on_1) -- roll a 1, roll again, get 4. Result: 4 (the 1 is discarded).
 
 # Compound
 
@@ -91,7 +89,7 @@ Like explode, but the extra rolls are added to the *original* die rather than pr
 
 [`d6 compound on 6`](#/d/d6_compound_on_6) or shorthand [`3d6ce6`](#/d/3d6ce6). Supports the same time limits: [`d6 compound once on 6`](#/d/d6_compound_once_on_6), [`d6 compound twice on 6`](#/d/d6_compound_twice_on_6), etc.
 
-Example: roll a 6 on a d6 with `compound on 6` -- roll again, get 4. Result: one die showing 10.
+Example: [`d6 compound once on 6`](#/d/d6_compound_once_on_6) -- roll a 6, roll again, get 4. Result: one die showing 10.
 
 # Emphasis
 
@@ -101,7 +99,7 @@ Example: roll a 6 on a d6 with `compound on 6` -- roll again, get 4. Result: one
 * [`d20 emphasis high`](#/d/d20_emphasis_high) -- ties go to the higher value
 * [`d20 emphasis low`](#/d/d20_emphasis_low) -- ties go to the lower value
 
-You can specify a custom center point instead of the average: [`d20 furthest from 8`](#/d/d20_furthest_from_8), with optional [`high`](#/d/d20_furthest_from_8_high), [`low`](#/d/d20_furthest_from_8_low), or [`reroll`](#/d/d20_furthest_from_8_reroll) tie-breakers.
+You can specify a custom center point instead of the average: [`d20 furthest from 8`](#/d/d20_furthest_from_8), with optional [`d20 furthest from 8 high`](#/d/d20_furthest_from_8_high), [`d20 furthest from 8 low`](#/d/d20_furthest_from_8_low), or [`d20 furthest from 8 reroll`](#/d/d20_furthest_from_8_reroll) tie-breakers.
 
 # Dice Pools
 
