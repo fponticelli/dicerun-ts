@@ -1,7 +1,7 @@
 import { comlink } from 'vite-plugin-comlink'
 
 export default {
-  base: '/dicerun-ts/',
+  base: '/',
   plugins: [
     comlink()
   ],
