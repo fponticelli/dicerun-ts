@@ -3,7 +3,6 @@ import { RemoteMarkdown } from './components/Markdown'
 import { ExpressionInput } from './components/ExpressionInput'
 import { RollView } from './components/RollView'
 import { ProbabilitiesView } from './components/ProbabilitiesView'
-import { JumpersRibbon } from './components/JumpersRibbon'
 import { Expression, type Parsed, type State } from './state'
 import { reduce } from './reducer'
 import { Action } from './action'
@@ -43,7 +42,6 @@ export const Content = (): JSX.DOMNode => {
   return (
     <div class="content">
       <div class="header">
-        <JumpersRibbon />
         <ExpressionInput dispatch={dispatch} expr={state.at('expression')} />
         <OneOf
           match={state.at('expression').map((v: Expression) => {
